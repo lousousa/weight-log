@@ -1,3 +1,4 @@
+import * as React from "react"
 import Head from 'next/head'
 import styled from 'styled-components'
 
@@ -14,7 +15,9 @@ export default function Home() {
       <Main>
         <h1>welcome</h1>
 
-        <button>add</button>
+        <ActionButton>
+          <SvgComponent/>
+        </ActionButton>
       </Main>
     </>
   )
@@ -28,3 +31,35 @@ const Main = styled.main`
   padding: 6rem;
   min-height: 100vh;
 `
+
+const ActionButton = styled.button`
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  background-color: #d00;
+  border: none;
+  cursor: pointer;
+
+  svg {
+    width: 16px;
+    margin: 0 auto;
+    color: #fff;
+  }
+`
+
+import { SVGProps } from "react"
+
+const SvgComponent = (props: SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" {...props}>
+    <path
+      fill="currentColor"
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M6.5 6.5V2a1.5 1.5 0 0 1 3 0v4.5H14a1.5 1.5 0 0 1 0 3H9.5V14a1.5 1.5 0 0 1-3 0V9.5H2a1.5 1.5 0 0 1 0-3h4.5z"
+    />
+  </svg>
+)
