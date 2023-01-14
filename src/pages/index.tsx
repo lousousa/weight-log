@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import styles from '@/styles/Home.module.css'
+import styled from 'styled-components'
 
 export default function Home() {
   return (
@@ -11,9 +11,20 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className={styles.main}>
-        <h1>weight log</h1>
-      </main>
+      <Main>
+        <h1>welcome</h1>
+
+        <button>add</button>
+      </Main>
     </>
   )
 }
+
+const Main = styled.main`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6rem;
+  min-height: 100vh;
+`
