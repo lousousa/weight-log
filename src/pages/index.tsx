@@ -1,7 +1,9 @@
-import * as React from "react"
+import * as React from 'react'
 import Head from 'next/head'
 import styled from 'styled-components'
 import { PlusIcon } from '../icons'
+
+import { Modal } from '../components/modal'
 
 export default function Home() {
   return (
@@ -17,8 +19,10 @@ export default function Home() {
         <h1>welcome</h1>
 
         <ActionButton>
-          <PlusIcon/>
+          <PlusIcon />
         </ActionButton>
+
+        <Modal />
       </Main>
     </>
   )
@@ -44,6 +48,7 @@ const ActionButton = styled.button`
   background-color: #d00;
   border: none;
   cursor: pointer;
+  box-shadow: 0 2px 4px #666;
 
   svg {
     width: 16px;
