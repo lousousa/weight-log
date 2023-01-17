@@ -1,11 +1,21 @@
-import * as React from 'react'
+import { useRef } from 'react'
 import Head from 'next/head'
 import styled from 'styled-components'
 import { PlusIcon } from '../icons'
 
 import { Modal } from '../components/modal'
 
+interface IModal {
+  open: () => void
+}
+
 export default function Home() {
+  const onAddActionHandler = () => {
+    modalRef.current?.open()
+  }
+
+  const modalRef = useRef<IModal>()
+
   return (
     <>
       <Head>
@@ -18,11 +28,13 @@ export default function Home() {
       <Main>
         <h1>welcome</h1>
 
-        <ActionButton>
+        <ActionButton
+          onClick={onAddActionHandler}
+        >
           <PlusIcon />
         </ActionButton>
 
-        <Modal />
+        <Modal ref={modalRef}/>
       </Main>
     </>
   )

@@ -1,15 +1,35 @@
-import * as React from 'react'
+import { forwardRef, useImperativeHandle, useState } from 'react'
 import styled from 'styled-components'
 
-export const Modal = () => {
-  return (
-    <ModalWrapper>
-      <InnerWrapper>
-        <h1>modal</h1>
-      </InnerWrapper>
-    </ModalWrapper>
+export const Modal = forwardRef((_, ref: any) => {
+  const [isVisible, setVisible] = useState<Boolean>(false)
+
+  useImperativeHandle(ref, () => ({
+    open() {
+      setVisible(true)
+    },
+    close() {
+      setVisible(false)
+    }
+  }))
+
+  return (<>
+      {isVisible &&
+        <ModalWrapper>
+          <InnerWrapper>
+            <button
+              onClick={ref?.current?.close}
+            >
+              close
+            </button>
+
+            <h1>modal</h1>
+          </InnerWrapper>
+        </ModalWrapper>
+      }
+    </>
   )
-}
+})
 
 const ModalWrapper = styled.main`
   position: fixed;
