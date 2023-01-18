@@ -14,14 +14,17 @@ export const Modal = forwardRef((props: IProps, ref: any) => {
     open() {
       setVisible(true)
     },
-    close() {
+    close(e: MouseEvent) {
+      if (e.target !== e.currentTarget) return
       setVisible(false)
     }
   }))
 
   return (<>
     {isVisible &&
-      <ModalWrapper>
+      <ModalWrapper
+        onClick={ref?.current?.close}
+      >
         <InnerWrapper>
           <ModalHeader>
             <CloseButton
