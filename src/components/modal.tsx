@@ -51,11 +51,13 @@ const ModalWrapper = styled.main`
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 20px;
 `
 
 const InnerWrapper = styled.div`
   background-color: #fff;
-  max-width: 1100px;
+  width: 100%;
+  max-width: 640px;
   border-radius: 4px;
   padding: 20px;
 `
@@ -69,7 +71,7 @@ const CloseButton = styled.button`
   font-size: 0;
   padding: 10px;
   border: none;
-  background-color: #d00;
+  background-color: #aaa;
   color: #fff;
   border-radius: 50%;
   cursor: pointer;

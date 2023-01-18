@@ -35,7 +35,7 @@ export default function Home() {
         </ActionButton>
 
         <Modal ref={modalRef}>
-          <h1>god save the queen</h1>
+          <p>enter your today's log:</p>
         </Modal>
       </Main>
     </>
