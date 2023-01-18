@@ -1,5 +1,6 @@
 import { forwardRef, useImperativeHandle, useState } from 'react'
 import styled from 'styled-components'
+import { CloseIcon } from '../icons'
 
 export const Modal = forwardRef((_, ref: any) => {
   const [isVisible, setVisible] = useState<Boolean>(false)
@@ -17,11 +18,13 @@ export const Modal = forwardRef((_, ref: any) => {
       {isVisible &&
         <ModalWrapper>
           <InnerWrapper>
-            <button
-              onClick={ref?.current?.close}
-            >
-              close
-            </button>
+            <ModalHeader>
+              <CloseButton
+                onClick={ref?.current?.close}
+              >
+                <CloseIcon />
+              </CloseButton>
+            </ModalHeader>
 
             <h1>modal</h1>
           </InnerWrapper>
@@ -45,4 +48,23 @@ const InnerWrapper = styled.div`
   max-width: 1100px;
   border-radius: 4px;
   padding: 20px;
+`
+
+const ModalHeader = styled.header`
+  display: flex;
+  justify-content: right;
+`
+
+const CloseButton = styled.button`
+  font-size: 0;
+  padding: 10px;
+  border: none;
+  background-color: #d00;
+  color: #fff;
+  border-radius: 50%;
+  cursor: pointer;
+
+  svg {
+    width: 12px;
+  }
 `
