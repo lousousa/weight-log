@@ -34,7 +34,9 @@ export default function Home() {
           <PlusIcon />
         </ActionButton>
 
-        <Modal ref={modalRef}/>
+        <Modal ref={modalRef}>
+          <h1>god save the queen</h1>
+        </Modal>
       </Main>
     </>
   )

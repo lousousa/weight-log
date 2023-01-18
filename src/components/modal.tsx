@@ -1,9 +1,14 @@
-import { forwardRef, useImperativeHandle, useState } from 'react'
+import { forwardRef, useImperativeHandle, useState, ReactNode } from 'react'
 import styled from 'styled-components'
 import { CloseIcon } from '../icons'
 
-export const Modal = forwardRef((_, ref: any) => {
+interface IProps {
+  children: ReactNode
+}
+
+export const Modal = forwardRef((props: IProps, ref: any) => {
   const [isVisible, setVisible] = useState<Boolean>(false)
+  const { children } = props
 
   useImperativeHandle(ref, () => ({
     open() {
@@ -15,23 +20,22 @@ export const Modal = forwardRef((_, ref: any) => {
   }))
 
   return (<>
-      {isVisible &&
-        <ModalWrapper>
-          <InnerWrapper>
-            <ModalHeader>
-              <CloseButton
-                onClick={ref?.current?.close}
-              >
-                <CloseIcon />
-              </CloseButton>
-            </ModalHeader>
+    {isVisible &&
+      <ModalWrapper>
+        <InnerWrapper>
+          <ModalHeader>
+            <CloseButton
+              onClick={ref?.current?.close}
+            >
+              <CloseIcon />
+            </CloseButton>
+          </ModalHeader>
 
-            <h1>modal</h1>
-          </InnerWrapper>
-        </ModalWrapper>
-      }
-    </>
-  )
+          {children}
+        </InnerWrapper>
+      </ModalWrapper>
+    }
+  </>)
 })
 
 const ModalWrapper = styled.main`
