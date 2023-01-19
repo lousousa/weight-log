@@ -1,7 +1,7 @@
 import { useRef } from 'react'
 import Head from 'next/head'
 import styled from 'styled-components'
-import { PlusIcon } from '../icons'
+import { PlusIcon } from '../commons/icons'
 
 import { Modal } from '../components/modal'
 

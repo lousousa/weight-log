@@ -1,6 +1,6 @@
-import * as React from "react"
+import { SVGProps } from "react"
 
-export const PlusIcon = (props) => (
+export const PlusIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" {...props}>
     <path
       fill="currentColor"
@@ -11,7 +11,7 @@ export const PlusIcon = (props) => (
   </svg>
 )
 
-export const CloseIcon = (props) => (
+export const CloseIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 23.332 23.333" xmlns="http://www.w3.org/2000/svg" {...props}>
     <path
       fill="currentColor"
