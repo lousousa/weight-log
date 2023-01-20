@@ -21,7 +21,7 @@ export const Modal = forwardRef((props: IProps, ref: any) => {
 
       window.setTimeout(() => {
         setVisible(false)
-      }, 150)
+      }, 125)
     },
     closeCheckingTarget(e: MouseEvent) {
       if (e.target !== e.currentTarget) return

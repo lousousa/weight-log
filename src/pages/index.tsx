@@ -1,6 +1,8 @@
 import { useRef } from 'react'
 import Head from 'next/head'
 import styled from 'styled-components'
+import Moment from 'react-moment'
+import moment from 'moment'
 import { PlusIcon } from '../commons/icons'
 
 import { Modal } from '../components/modal'
@@ -35,7 +37,17 @@ export default function Home() {
         </ActionButton>
 
         <Modal ref={modalRef}>
-          <p>enter your today's log:</p>
+          <form>
+            <h1>
+              <Moment date={moment()} format="ll" />
+            </h1>
+            <p>enter your today's log:</p>
+            <p>
+              <input />
+              <span>kg</span>
+            </p>
+            <button>ok</button>
+          </form>
         </Modal>
       </Main>
     </>
