@@ -49,7 +49,9 @@ export const Modal = forwardRef((props: IProps, ref: any) => {
             </CloseButton>
           </ModalHeader>
 
-          {content}
+          <ModalContent>
+            {content}
+          </ModalContent>
         </InnerWrapper>
       </ModalWrapper>
     }
@@ -84,12 +86,13 @@ const InnerWrapper = styled.div`
   width: 100%;
   max-width: 640px;
   border-radius: 4px;
-  padding: 16px;
 `
 
 const ModalHeader = styled.header`
   display: flex;
   align-items: center;
+  border-bottom: 1px solid #bbb;
+  padding: 16px;
 `
 
 const TitleWrapper = styled.div`
@@ -111,4 +114,8 @@ const CloseButton = styled.button`
   svg {
     width: 12px;
   }
+`
+
+const ModalContent = styled.div`
+  padding: 16px;
 `
