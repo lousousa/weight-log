@@ -4,13 +4,14 @@ import { CloseIcon } from '../commons/icons'
 import { fadeIn, fadeOut, slideUp, slideDown } from '../commons/animations'
 
 interface IProps {
-  children: ReactNode
+  title?: String,
+  content: ReactNode
 }
 
 export const Modal = forwardRef((props: IProps, ref: any) => {
   const [isVisible, setVisible] = useState<Boolean>(false)
   const wrapperRef = useRef<HTMLElement | null>(null)
-  const { children } = props
+  const { title, content } = props
 
   useImperativeHandle(ref, () => ({
     open() {
@@ -37,6 +38,10 @@ export const Modal = forwardRef((props: IProps, ref: any) => {
       >
         <InnerWrapper>
           <ModalHeader>
+            <TitleWrapper>
+              {title}
+            </TitleWrapper>
+
             <CloseButton
               onClick={ref?.current?.close}
             >
@@ -44,7 +49,7 @@ export const Modal = forwardRef((props: IProps, ref: any) => {
             </CloseButton>
           </ModalHeader>
 
-          {children}
+          {content}
         </InnerWrapper>
       </ModalWrapper>
     }
@@ -58,7 +63,7 @@ const ModalWrapper = styled.main`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px;
+  padding: 16px;
   animation: ${fadeIn} 125ms forwards;
 
   > div {
@@ -79,19 +84,26 @@ const InnerWrapper = styled.div`
   width: 100%;
   max-width: 640px;
   border-radius: 4px;
-  padding: 20px;
+  padding: 16px;
 `
 
 const ModalHeader = styled.header`
   display: flex;
-  justify-content: right;
+  align-items: center;
+`
+
+const TitleWrapper = styled.div`
+  width: 100%;
+  font-size: 20px;
+  line-height: 24px;
+  font-weight: 700;
 `
 
 const CloseButton = styled.button`
   font-size: 0;
-  padding: 10px;
+  padding: 8px;
   border: none;
-  background-color: #aaa;
+  background-color: #bbb;
   color: #fff;
   border-radius: 50%;
   cursor: pointer;
