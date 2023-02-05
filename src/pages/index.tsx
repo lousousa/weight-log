@@ -2,7 +2,7 @@ import { useRef } from 'react'
 import Head from 'next/head'
 import styled from 'styled-components'
 import moment from 'moment'
-import { PlusIcon } from '../commons/icons'
+import { PlusIcon, CheckMarkIcon } from '../commons/icons'
 
 import { Modal } from '../components/modal'
 
@@ -31,7 +31,7 @@ export default function Home() {
         </FormText>
 
         <FormButton>
-          ok
+          <CheckMarkIcon />
         </FormButton>
       </InputWrapper>
     </MainForm>
@@ -126,6 +126,10 @@ const FormButton = styled.button`
   border: none;
   padding: 8px 16px;
   border-radius: 4px;
-  font-size: 18px;
   background-color: #8ac926;
+
+  svg {
+    width: 16px;
+    color: #fff;
+  }
 `
