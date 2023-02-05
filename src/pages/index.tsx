@@ -20,14 +20,21 @@ export default function Home() {
   const modalTitle = moment().format('ll')
 
   const modalContent = (
-    <form>
-      <p>enter your today's log:</p>
-      <p>
-        <input />
-        <span>kg</span>
-      </p>
-      <button>ok</button>
-    </form>
+    <MainForm>
+      <FormLabel>enter your today's log:</FormLabel>
+
+      <InputWrapper>
+        <FormInput />
+
+        <FormText>
+          kg
+        </FormText>
+
+        <FormButton>
+          ok
+        </FormButton>
+      </InputWrapper>
+    </MainForm>
   )
 
   return (
@@ -75,7 +82,7 @@ const ActionButton = styled.button`
   position: relative;
   justify-content: center;
   align-items: center;
-  background-color: #d00;
+  background-color: #ef233c;
   border: none;
   cursor: pointer;
   box-shadow: 0 2px 4px #666;
@@ -85,4 +92,40 @@ const ActionButton = styled.button`
     margin: 0 auto;
     color: #fff;
   }
+`
+
+const MainForm = styled.form`
+  margin: 0 auto;
+  max-width: 240px;
+  text-align: center;
+  padding: 64px 0;
+  font-size: 18px;
+`
+
+const FormLabel = styled.p`
+  margin-bottom: 16px;
+  line-height: 32px;
+`
+
+const InputWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
+const FormInput = styled.input`
+  border: none;
+  border-bottom: 1px solid #222;
+`
+
+const FormText = styled.span`
+  margin: 0 16px;
+`
+
+const FormButton = styled.button`
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 18px;
+  background-color: #8ac926;
 `
