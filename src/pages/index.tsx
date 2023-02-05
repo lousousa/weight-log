@@ -116,6 +116,11 @@ const InputWrapper = styled.div`
 const FormInput = styled.input`
   border: none;
   border-bottom: 1px solid #222;
+  font-size: 24px;
+  font-weight: 700;
+  outline: none;
+  text-align: center;
+  width: 96px;
 `
 
 const FormText = styled.span`
