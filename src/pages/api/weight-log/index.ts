@@ -6,6 +6,11 @@ const router = createRouter<NextApiRequest, NextApiResponse>()
 import { GoogleSpreadsheet } from 'google-spreadsheet'
 const doc = new GoogleSpreadsheet(process.env.GOOGLE_SPREADSHEET_ID)
 
+interface IEntryProp {
+  date: string,
+  weight: string
+}
+
 async function userServiceAccountAuth() {
   await doc.useServiceAccountAuth({
     client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL || '',
@@ -13,14 +18,18 @@ async function userServiceAccountAuth() {
   })
 }
 
-async function getData() {
+async function loadSheet() {
   await userServiceAccountAuth()
   await doc.loadInfo()
   const sheet = doc.sheetsByTitle['MainSheet']
   await sheet.resetLocalCache(true)
   await sheet.loadCells('A1:B')
 
-  const lastRowNumber = sheet.cellStats.nonEmpty / 2
+  return { sheet, lastRowNumber: sheet.cellStats.nonEmpty / 2 }
+}
+
+async function getData() {
+  const { sheet, lastRowNumber } = await loadSheet()
   const data = []
 
   for (let i = 0; i < lastRowNumber; i++) {
@@ -36,15 +45,22 @@ async function getData() {
   return data
 }
 
+async function addEntry(entry: IEntryProp) {
+  const { sheet, lastRowNumber } = await loadSheet()
+
+  sheet.getCell(lastRowNumber, 0).value = entry.date
+  sheet.getCell(lastRowNumber, 1).value = entry.weight
+
+  return sheet.saveUpdatedCells()
+}
+
 router.get(async (req: NextApiRequest, res: NextApiResponse<any>) => {
   res.status(200).json(await getData())
 })
 
 router.post(async (req: NextApiRequest, res: NextApiResponse<any>) => {
-  console.log(req.body)
-
+  await addEntry(req.body)
   res.status(200).json({ success: true })
 })
 
 export default router
-
