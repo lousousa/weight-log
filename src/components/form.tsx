@@ -6,6 +6,10 @@ import { CheckMarkIcon } from '../commons/icons'
 export default function Form() {
   const [weight, setWeight] = useState('')
 
+  const handleWeightInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setWeight(parseFloat(e.target.value).toString())
+  }
+
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault()
 
@@ -30,7 +34,8 @@ export default function Form() {
 
         <InputWrapper>
           <FormInput
-            onChange={e => setWeight(e.target.value)}
+            type="tel"
+            onChange={handleWeightInput}
           />
 
           <FormText>
