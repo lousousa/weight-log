@@ -2,13 +2,10 @@ import { useState } from 'react'
 import styled from 'styled-components'
 import moment from 'moment'
 import { CheckMarkIcon } from '../commons/icons'
+import WeightInput from '../components/weightInput'
 
 export default function Form() {
   const [weight, setWeight] = useState('')
-
-  const handleWeightInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setWeight(parseFloat(e.target.value).toString())
-  }
 
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault()
@@ -33,9 +30,8 @@ export default function Form() {
         <FormLabel>enter your today's log:</FormLabel>
 
         <InputWrapper>
-          <FormInput
-            type="tel"
-            onChange={handleWeightInput}
+          <WeightInput
+            setWeight={setWeight}
           />
 
           <FormText>
@@ -70,18 +66,9 @@ const InputWrapper = styled.div`
   justify-content: center;
 `
 
-const FormInput = styled.input`
-  border: none;
-  border-bottom: 1px solid #222;
-  font-size: 24px;
-  font-weight: 700;
-  outline: none;
-  text-align: center;
-  width: 96px;
-`
-
 const FormText = styled.span`
   margin: 0 16px;
+  font-weight: 700;
 `
 
 const FormButton = styled.button`
