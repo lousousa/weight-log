@@ -1,14 +1,20 @@
+import { useState } from 'react'
 import styled from 'styled-components'
+import moment from 'moment'
 import { CheckMarkIcon } from '../commons/icons'
 
 export default function Form() {
-  const onSubmit = (e: React.SyntheticEvent) => {
+  const [weight, setWeight] = useState('')
+
+  const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault()
+
+    const date = moment().format('YYYY-MM-DD')
 
     fetch('/api/weight-log', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ date: '2023-02-13', weight: 84.5 })
+      body: JSON.stringify({ date, weight })
     })
       .then(response => response.json())
       .then(data => console.log('success', data))
@@ -18,12 +24,14 @@ export default function Form() {
   return (
     <>
       <MainForm
-        onSubmit={onSubmit}
+        onSubmit={handleSubmit}
       >
         <FormLabel>enter your today's log:</FormLabel>
 
         <InputWrapper>
-          <FormInput />
+          <FormInput
+            onChange={e => setWeight(e.target.value)}
+          />
 
           <FormText>
             kg
