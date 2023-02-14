@@ -6,9 +6,11 @@ import WeightInput from '../components/weightInput'
 
 export default function Form() {
   const [weight, setWeight] = useState('')
+  const [isLoading, setLoading] = useState(false)
 
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault()
+    setLoading(true)
 
     const date = moment().format('YYYY-MM-DD')
 
@@ -18,7 +20,7 @@ export default function Form() {
       body: JSON.stringify({ date, weight })
     })
       .then(response => response.json())
-      .then(data => console.log('success', data))
+      .then(() => setLoading(false))
       .catch(error => console.error('error', error))
   }
 
@@ -38,9 +40,11 @@ export default function Form() {
             kg
           </FormText>
 
-          <FormButton>
-            <CheckMarkIcon />
-          </FormButton>
+          {!isLoading && (
+            <FormButton>
+              <CheckMarkIcon />
+            </FormButton>
+          )}
         </InputWrapper>
       </MainForm>
     </>
