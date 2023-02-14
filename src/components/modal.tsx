@@ -8,7 +8,7 @@ interface IProps {
   content: ReactNode
 }
 
-export const Modal = forwardRef((props: IProps, ref: any) => {
+export default forwardRef((props: IProps, ref: any) => {
   const [isVisible, setVisible] = useState<Boolean>(false)
   const wrapperRef = useRef<HTMLElement | null>(null)
   const { title, content } = props
