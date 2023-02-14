@@ -40,5 +40,11 @@ router.get(async (req: NextApiRequest, res: NextApiResponse<any>) => {
   res.status(200).json(await getData())
 })
 
+router.post(async (req: NextApiRequest, res: NextApiResponse<any>) => {
+  console.log(req.body)
+
+  res.status(200).json({ success: true })
+})
+
 export default router
 

@@ -15,12 +15,27 @@ export default function Home() {
     modalRef.current?.open()
   }
 
+  const onSubmit = (e: React.SyntheticEvent) => {
+    e.preventDefault()
+
+    fetch('/api/weight-log', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ date: '2023-02-13', weight: 84.5 })
+    })
+      .then(response => response.json())
+      .then(data => console.log('success', data))
+      .catch(error => console.error('error', error))
+  }
+
   const modalRef = useRef<IModal>()
 
   const modalTitle = moment().format('ll')
 
   const modalContent = (
-    <MainForm>
+    <MainForm
+      onSubmit={onSubmit}
+    >
       <FormLabel>enter your today's log:</FormLabel>
 
       <InputWrapper>
