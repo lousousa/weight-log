@@ -8,20 +8,23 @@ export default function Form() {
   const [weight, setWeight] = useState('')
   const [isLoading, setLoading] = useState(false)
 
-  const handleSubmit = (e: React.SyntheticEvent) => {
+  const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault()
     setLoading(true)
 
     const date = moment().format('YYYY-MM-DD')
 
-    fetch('/api/weight-log', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ date, weight })
-    })
-      .then(response => response.json())
-      .then(() => setLoading(false))
-      .catch(error => console.error('error', error))
+    try {
+      await fetch('/api/weight-log', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ date, weight })
+      })
+
+      setLoading(false)
+    } catch(error) {
+      console.error('error', error)
+    }
   }
 
   return (

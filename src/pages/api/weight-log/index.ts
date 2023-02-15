@@ -1,15 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
+import { ILogEntry } from '@/types'
 
 import createRouter from 'next-connect'
 const router = createRouter<NextApiRequest, NextApiResponse>()
 
 import { GoogleSpreadsheet } from 'google-spreadsheet'
 const doc = new GoogleSpreadsheet(process.env.GOOGLE_SPREADSHEET_ID)
-
-interface IEntryProp {
-  date: string,
-  weight: string
-}
 
 async function userServiceAccountAuth() {
   await doc.useServiceAccountAuth({
@@ -45,7 +41,7 @@ async function getData() {
   return data
 }
 
-async function addEntry(entry: IEntryProp) {
+async function addEntry(entry: ILogEntry) {
   const { sheet, lastRowNumber } = await loadSheet()
 
   sheet.getCell(lastRowNumber, 0).value = entry.date
