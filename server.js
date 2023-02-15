@@ -1,4 +1,4 @@
-// require('dotenv').config()
+require('dotenv').config()
 
 /*
 // Alternate server method by setting just the port:
