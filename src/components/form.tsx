@@ -32,7 +32,7 @@ export default function Form() {
       <MainForm
         onSubmit={handleSubmit}
       >
-        <FormLabel>enter your today's log:</FormLabel>
+        <FormLabel>enter your today&apos;s log:</FormLabel>
 
         <InputWrapper>
           <WeightInput

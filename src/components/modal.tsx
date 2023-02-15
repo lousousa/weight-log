@@ -8,7 +8,7 @@ interface IProps {
   content: ReactNode
 }
 
-export default forwardRef((props: IProps, ref: any) => {
+const Modal = forwardRef((props: IProps, ref: any) => {
   const [isVisible, setVisible] = useState<Boolean>(false)
   const wrapperRef = useRef<HTMLElement | null>(null)
   const { title, content } = props
@@ -57,6 +57,10 @@ export default forwardRef((props: IProps, ref: any) => {
     }
   </>)
 })
+
+Modal.displayName = 'Modal'
+
+export default Modal
 
 const ModalWrapper = styled.main`
   position: fixed;

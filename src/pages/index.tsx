@@ -56,8 +56,10 @@ export default function Home() {
           <h1>welcome</h1>
 
           <DataSection>
-            {content.map((item: ILogEntry) => (
-              <p><b>{moment(item.date).format('DD/MM/YYYY')}:</b> {item.weight}</p>
+            {content.map((item: ILogEntry, idx) => (
+              <p key={`log_entry_${idx}`}>
+                <b>{moment(item.date).format('DD/MM/YYYY')}:</b> {item.weight}
+              </p>
             ))}
           </DataSection>
 
