@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import moment from 'moment'
 import { PlusIcon } from '@/commons/icons'
 import { ILogEntry } from '@/types'
+import { fadeIn, slideUp } from '../commons/animations'
 
 import Modal from '@/components/modal'
 import Form from '@/components/form'
@@ -34,7 +35,7 @@ export default function Home() {
         data.sort((a: ILogEntry, b: ILogEntry) => a.date > b.date ? -1 : 1)
 
         setContent(data)
-        // setLoading(false)
+        setLoading(false)
       } catch (error) {
         console.error(error)
       }
@@ -55,28 +56,30 @@ export default function Home() {
       <Main>
         {isLoading && (
           <RingLoader
-            color='orange'
-            size='240px'
+            color='#0096c7'
+            size='64px'
           />
         )}
 
-        {!isLoading && (<>
-          <h1>welcome</h1>
+        {!isLoading && (
+          <ContentSection>
+            <h1>welcome</h1>
 
-          <DataSection>
-            {content.map((item: ILogEntry, idx) => (
-              <p key={`log_entry_${idx}`}>
-                <b>{moment(item.date).format('DD/MM/YYYY')}:</b> {item.weight}
-              </p>
-            ))}
-          </DataSection>
+            <DataSection>
+              {content.map((item: ILogEntry, idx) => (
+                <p key={`log_entry_${idx}`}>
+                  <b>{moment(item.date).format('DD/MM/YYYY')}:</b> {item.weight}
+                </p>
+              ))}
+            </DataSection>
 
-          <ActionButton
-            onClick={onAddActionHandler}
-          >
-            <PlusIcon />
-          </ActionButton>
-        </>)}
+            <ActionButton
+              onClick={onAddActionHandler}
+            >
+              <PlusIcon />
+            </ActionButton>
+          </ContentSection>
+        )}
 
         <Modal
           ref={modalRef}
@@ -90,11 +93,15 @@ export default function Home() {
 
 const Main = styled.main`
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   padding: 2rem;
   min-height: 100vh;
+`
+
+const ContentSection = styled.div`
+  text-align: center;
+  animation: ${fadeIn} 250ms forwards, ${slideUp} 125ms forwards;
 `
 
 const DataSection = styled.section`
@@ -108,6 +115,7 @@ const ActionButton = styled.button`
   width: 48px;
   height: 48px;
   border-radius: 50%;
+  margin: 0 auto;
   display: flex;
   position: relative;
   justify-content: center;
