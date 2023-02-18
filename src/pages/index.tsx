@@ -7,6 +7,7 @@ import { ILogEntry } from '@/types'
 
 import Modal from '@/components/modal'
 import Form from '@/components/form'
+import RingLoader from '@/components/ringLoader'
 
 interface IModal {
   open: () => void
@@ -33,7 +34,7 @@ export default function Home() {
         data.sort((a: ILogEntry, b: ILogEntry) => a.date > b.date ? -1 : 1)
 
         setContent(data)
-        setLoading(false)
+        // setLoading(false)
       } catch (error) {
         console.error(error)
       }
@@ -52,6 +53,13 @@ export default function Home() {
       </Head>
 
       <Main>
+        {isLoading && (
+          <RingLoader
+            color='orange'
+            size='240px'
+          />
+        )}
+
         {!isLoading && (<>
           <h1>welcome</h1>
 
