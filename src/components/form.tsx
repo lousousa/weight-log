@@ -1,8 +1,10 @@
 import { useState } from 'react'
 import styled from 'styled-components'
 import moment from 'moment'
+import classNames from 'classnames'
 import { CheckMarkIcon } from '../commons/icons'
 import WeightInput from '../components/weightInput'
+import RingLoader from '@/components/ringLoader'
 
 export default function Form() {
   const [weight, setWeight] = useState('')
@@ -13,6 +15,12 @@ export default function Form() {
     setLoading(true)
 
     const date = moment().format('YYYY-MM-DD')
+
+    window.setTimeout(() => {
+      setLoading(false)
+    }, 2000)
+
+    return
 
     try {
       await fetch('/api/weight-log', {
@@ -28,29 +36,41 @@ export default function Form() {
   }
 
   return (
-    <>
-      <MainForm
-        onSubmit={handleSubmit}
-      >
-        <FormLabel>enter your today&apos;s log:</FormLabel>
+    <MainForm
+      onSubmit={handleSubmit}
+    >
+      <FormLabel>enter your today&apos;s log:</FormLabel>
 
-        <InputWrapper>
-          <WeightInput
-            setWeight={setWeight}
-          />
+      <InputWrapper>
+        <WeightInput
+          setWeight={setWeight}
+        />
 
-          <FormText>
-            kg
-          </FormText>
+        <FormText>
+          kg
+        </FormText>
 
-          {!isLoading && (
-            <FormButton>
+
+          <FormButton
+            className={classNames({
+              '-is-disabled': isLoading
+            })}
+            disabled={isLoading}
+          >
+            {isLoading && (
+              <RingLoader
+                color='#ffffff'
+                size='24px'
+              />
+            )}
+
+            {!isLoading && (
               <CheckMarkIcon />
-            </FormButton>
-          )}
-        </InputWrapper>
-      </MainForm>
-    </>
+            )}
+          </FormButton>
+
+      </InputWrapper>
+    </MainForm>
   )
 }
 
@@ -83,9 +103,20 @@ const FormButton = styled.button`
   padding: 8px 16px;
   border-radius: 4px;
   background-color: #8ac926;
+  transition: background-color 125ms;
+  cursor: pointer;
+  font-size: 24px;
+
+  &.-is-disabled {
+    background-color: #c0f170;
+  }
 
   svg {
-    width: 16px;
+    height: 24px;
     color: #fff;
+  }
+
+  .ring-loader {
+    margin: 2px 0 -2px 0;
   }
 `

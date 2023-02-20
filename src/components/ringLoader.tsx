@@ -7,7 +7,7 @@ interface IProps {
 
 export default function RingLoader({size, color}: IProps) {
   return (
-    <Ring size={size} color={color}>
+    <Ring className="ring-loader" size={size} color={color}>
       <div></div>
       <div></div>
       <div></div>
