@@ -7,8 +7,11 @@ import { CheckMarkIcon } from '../commons/icons'
 import WeightInput from '@/components/weightInput'
 import RingLoader from '@/components/ringLoader'
 
+interface IProps {
+  onSubmit: () => void
+}
 
-export default function Form() {
+export default function Form({ onSubmit }: IProps) {
   const [weight, setWeight] = useState('')
   const [isLoading, setLoading] = useState(false)
 
@@ -21,7 +24,7 @@ export default function Form() {
     window.setTimeout(() => {
       setLoading(false)
 
-      window.$toastService.alert('successfully saved!')
+      onSubmit()
     }, 2000)
 
     return
@@ -106,13 +109,13 @@ const FormButton = styled.button`
   border: none;
   padding: 8px 16px;
   border-radius: 4px;
-  background-color: #8ac926;
+  background-color: #81BB24;
   transition: background-color 125ms;
   cursor: pointer;
   font-size: 24px;
 
   &.-is-disabled {
-    background-color: #c0f170;
+    background-color: #A6DD4D;
   }
 
   svg {

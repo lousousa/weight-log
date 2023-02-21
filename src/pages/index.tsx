@@ -13,6 +13,7 @@ import ToastService from '@/components/toastService'
 
 interface IModal {
   open: () => void
+  close: () => void
 }
 
 export default function Home() {
@@ -47,6 +48,14 @@ export default function Home() {
 
     fetchContent()
   })
+
+  const onFormSubmit = () => {
+    modalRef.current?.close()
+    window.$toastService.alert('data was successfully saved!', 'is-success', 4000)
+    window.setTimeout(() => {
+      window.$toastService.alert('yes yes', 'is-info', 4000)
+    }, 1000)
+  }
 
   return (
     <>
@@ -88,7 +97,7 @@ export default function Home() {
         <Modal
           ref={modalRef}
           title={modalTitle}
-          content={Form()}
+          content={Form({ onSubmit: onFormSubmit })}
         />
 
         <ToastService
@@ -128,7 +137,7 @@ const ActionButton = styled.button`
   position: relative;
   justify-content: center;
   align-items: center;
-  background-color: #ef233c;
+  background-color: #FF3E45;
   border: none;
   cursor: pointer;
   box-shadow: 0 2px 4px #666;

@@ -1,7 +1,7 @@
 import { forwardRef, useImperativeHandle, useState, ReactNode, useRef } from 'react'
 import styled from 'styled-components'
-import { CloseIcon } from '../commons/icons'
-import { fadeIn, fadeOut, slideUp, slideDown } from '../commons/animations'
+import { CloseIcon } from '@/commons/icons'
+import { fadeIn, fadeOut, slideUp, slideDown } from '@/commons/animations'
 
 interface IProps {
   title?: String,

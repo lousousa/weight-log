@@ -1,5 +1,7 @@
 import { forwardRef, useImperativeHandle, useState } from 'react'
 import styled from 'styled-components'
+import classNames from 'classnames'
+import { fadeIn, fadeOut, slideUp, slideDown } from '@/commons/animations'
 
 enum DisplayState {
   IsShowing = 1,
@@ -25,16 +27,22 @@ const ToastService = forwardRef((_, ref) => {
 
       setCurrentKey(currentKey + 1)
 
-      setMessages([...messages, {
+      messages.push({
         key: currentKey,
         content: message,
         type,
         animationState: 1
-      }])
+      })
+
+      setMessages([...messages])
 
       setTimeout(() => {
         const message = messages.find(message => message.key === currentKey)
-        if (message) message.animationState = 2
+
+        if (message) {
+          message.animationState = 2
+          setMessages([...messages])
+        }
       }, duration)
 
       setTimeout(() => {
@@ -46,7 +54,10 @@ const ToastService = forwardRef((_, ref) => {
   return (<ToastWrapper>
     {messages.map((message, idx) => (
       <ToastMessage
-        className={`-${ message.type }`}
+        className={`-${ message.type } `.concat(classNames({
+          '-is-showing': message.animationState === 1,
+          '-is-leaving': message.animationState === 2
+        }))}
         key={`toast_message_${idx}`}
       >
         <span>{message.content}</span>
@@ -63,14 +74,35 @@ const ToastWrapper = styled.div`
 const ToastMessage = styled.div`
   position: absolute;
   inset: auto 16px 16px;
-  padding: 12px 8px;
+  padding: 12px;
   border-radius: 3px;
   background-color: #222;
   color: #fff;
+  max-width: 480px;
+  margin: 0 auto;
+
+  &.-is-showing {
+    animation: ${slideUp} 150ms forwards, ${fadeIn} 150ms forwards;
+  }
+
+  &.-is-leaving {
+    animation: ${slideDown} 150ms forwards, ${fadeOut} 150ms forwards;
+  }
 
   &.-is-success {
-    background-color: #8ac926;
-    color: #222;
+    background-color: #81BB24;
+  }
+
+  &.-is-info {
+    background-color: #0096c7;
+  }
+
+  &.-is-warning {
+    background-color: #C9B426;
+  }
+
+  &.-is-error {
+    background-color: #FF3E45;
   }
 `
 
