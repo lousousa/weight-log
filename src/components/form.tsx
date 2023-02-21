@@ -3,8 +3,10 @@ import styled from 'styled-components'
 import moment from 'moment'
 import classNames from 'classnames'
 import { CheckMarkIcon } from '../commons/icons'
-import WeightInput from '../components/weightInput'
+
+import WeightInput from '@/components/weightInput'
 import RingLoader from '@/components/ringLoader'
+
 
 export default function Form() {
   const [weight, setWeight] = useState('')
@@ -18,6 +20,8 @@ export default function Form() {
 
     window.setTimeout(() => {
       setLoading(false)
+
+      window.$toastService.alert('successfully saved!')
     }, 2000)
 
     return

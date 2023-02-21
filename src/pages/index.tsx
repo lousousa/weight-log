@@ -9,6 +9,7 @@ import { fadeIn, slideUp } from '../commons/animations'
 import Modal from '@/components/modal'
 import Form from '@/components/form'
 import RingLoader from '@/components/ringLoader'
+import ToastService from '@/components/toastService'
 
 interface IModal {
   open: () => void
@@ -16,6 +17,7 @@ interface IModal {
 
 export default function Home() {
   const modalRef = useRef<IModal>()
+  const toastServiceRef = useRef()
   const modalTitle = moment().format('ll')
   const [isLoading, setLoading] = useState(true)
   const [content, setContent] = useState([])
@@ -24,6 +26,8 @@ export default function Home() {
   const onAddActionHandler = () => modalRef.current?.open()
 
   useEffect(() => {
+    window.$toastService = toastServiceRef.current
+
     const fetchContent = async () => {
       if (dataFetchedRef.current) return
       dataFetchedRef.current = true
@@ -85,6 +89,10 @@ export default function Home() {
           ref={modalRef}
           title={modalTitle}
           content={Form()}
+        />
+
+        <ToastService
+          ref={toastServiceRef}
         />
       </Main>
     </>
