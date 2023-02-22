@@ -17,6 +17,12 @@ export default function Form({ onSubmit }: IProps) {
 
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault()
+
+    if (weight.length < 4) {
+      window.$toastService.alert('enter a weight correctly', 'is-error')
+      return
+    }
+
     setLoading(true)
 
     const date = moment().format('YYYY-MM-DD')
