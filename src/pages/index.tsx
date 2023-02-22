@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useState, useEffect, useCallback } from 'react'
 import Head from 'next/head'
 import styled from 'styled-components'
 import moment from 'moment'
@@ -9,40 +9,49 @@ import { fadeIn, slideUp } from '../commons/animations'
 import Modal from '@/components/modal'
 import Form from '@/components/form'
 import RingLoader from '@/components/ringLoader'
+import ToastService from '@/components/toastService'
 
 interface IModal {
   open: () => void
+  close: () => void
 }
 
 export default function Home() {
   const modalRef = useRef<IModal>()
+  const toastServiceRef = useRef()
   const modalTitle = moment().format('ll')
-  const [isLoading, setLoading] = useState(true)
+  const [isLoading, setLoading] = useState(false)
   const [content, setContent] = useState([])
-  const dataFetchedRef = useRef(false)
 
   const onAddActionHandler = () => modalRef.current?.open()
 
-  useEffect(() => {
-    const fetchContent = async () => {
-      if (dataFetchedRef.current) return
-      dataFetchedRef.current = true
+  const fetchContent = useCallback(async () => {
+    setLoading(true)
 
-      try {
-        const response = await fetch('/api/weight-log')
-        const data = await response.json()
+    try {
+      const response = await fetch('/api/weight-log')
+      const data = await response.json()
 
-        data.sort((a: ILogEntry, b: ILogEntry) => a.date > b.date ? -1 : 1)
+      data.sort((a: ILogEntry, b: ILogEntry) => a.date > b.date ? -1 : 1)
 
-        setContent(data)
-        setLoading(false)
-      } catch (error) {
-        console.error(error)
-      }
+      setContent(data)
+      setLoading(false)
+    } catch (error) {
+      console.error(error)
     }
+  }, [])
+
+  useEffect(() => {
+    window.$toastService = toastServiceRef.current
 
     fetchContent()
-  })
+  }, [fetchContent])
+
+  const onFormSubmit = () => {
+    modalRef.current?.close()
+    window.$toastService.alert('data was successfully saved!', 'is-success')
+    fetchContent()
+  }
 
   return (
     <>
@@ -84,7 +93,11 @@ export default function Home() {
         <Modal
           ref={modalRef}
           title={modalTitle}
-          content={Form()}
+          content={<Form onSubmit={onFormSubmit} />}
+        />
+
+        <ToastService
+          ref={toastServiceRef}
         />
       </Main>
     </>
@@ -120,7 +133,7 @@ const ActionButton = styled.button`
   position: relative;
   justify-content: center;
   align-items: center;
-  background-color: #ef233c;
+  background-color: #FF3E45;
   border: none;
   cursor: pointer;
   box-shadow: 0 2px 4px #666;
