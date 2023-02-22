@@ -20,24 +20,24 @@ const ToastService = forwardRef((_, ref) => {
   const messages = useRef<Message[]>([])
   const [tick, setTick] = useState(0)
 
-  const useForceUpdate = () => {
+  const forceUpdate = () => {
     setTick(tick => tick + 1)
   }
 
   const removeMessage = (id: number) => {
     messages.current = messages.current.filter(message => message.id !== id)
-    useForceUpdate()
+    forceUpdate()
   }
 
   const runToast = (id: number) => {
     const current = messages.current.find(message => message.id === id)
     if (!current) return
 
-    useForceUpdate()
+    forceUpdate()
 
     setTimeout(() => {
       current.animationState = 2
-      useForceUpdate()
+      forceUpdate()
     }, current.duration)
 
     setTimeout(() => {

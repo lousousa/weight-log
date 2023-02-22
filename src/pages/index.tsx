@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useState, useEffect, useCallback } from 'react'
 import Head from 'next/head'
 import styled from 'styled-components'
 import moment from 'moment'
@@ -25,9 +25,7 @@ export default function Home() {
 
   const onAddActionHandler = () => modalRef.current?.open()
 
-  const fetchContent = async () => {
-    if (isLoading) return
-
+  const fetchContent = useCallback(async () => {
     setLoading(true)
 
     try {
@@ -41,13 +39,13 @@ export default function Home() {
     } catch (error) {
       console.error(error)
     }
-  }
+  }, [])
 
   useEffect(() => {
     window.$toastService = toastServiceRef.current
 
     fetchContent()
-  }, [])
+  }, [fetchContent])
 
   const onFormSubmit = () => {
     modalRef.current?.close()
