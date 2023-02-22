@@ -10,6 +10,7 @@ import Modal from '@/components/modal'
 import Form from '@/components/form'
 import RingLoader from '@/components/ringLoader'
 import ToastService from '@/components/toastService'
+import Chart from '@/components/chart'
 
 interface IModal {
   open: () => void
@@ -20,7 +21,7 @@ export default function Home() {
   const modalRef = useRef<IModal>()
   const toastServiceRef = useRef()
   const modalTitle = moment().format('ll')
-  const [isLoading, setLoading] = useState(false)
+  const [isLoading, setLoading] = useState(true)
   const [content, setContent] = useState([])
 
   const onAddActionHandler = () => modalRef.current?.open()
@@ -74,13 +75,7 @@ export default function Home() {
           <ContentSection>
             <h1>welcome</h1>
 
-            <DataSection>
-              {content.map((item: ILogEntry, idx) => (
-                <p key={`log_entry_${idx}`}>
-                  <b>{moment(item.date).format('DD/MM/YYYY')}:</b> {item.weight}
-                </p>
-              ))}
-            </DataSection>
+            <Chart data={content} />
 
             <ActionButton
               onClick={onAddActionHandler}
@@ -115,13 +110,6 @@ const Main = styled.main`
 const ContentSection = styled.div`
   text-align: center;
   animation: ${fadeIn} 250ms forwards, ${slideUp} 125ms forwards;
-`
-
-const DataSection = styled.section`
-  margin: 16px 0%;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-gap: 8px 16px;
 `
 
 const ActionButton = styled.button`
