@@ -66,28 +66,33 @@ const ToastService = forwardRef((_, ref) => {
     }
   }, [messages])
 
-  return (<ToastWrapper>
+  return (<ToastSection>
     {messages.map((message) => (
-      <ToastMessage
-        className={`-${ message.type } `.concat(classNames({
-          '-is-showing': message.animationState === 1,
-          '-is-leaving': message.animationState === 2
-        }))}
+      <ToastMessageWrapper
         key={`toast_message_${message.id}`}
       >
-        <span>{message.content}</span>
-      </ToastMessage>
+        <ToastMessage
+          className={`-${ message.type } `.concat(classNames({
+            '-is-showing': message.animationState === 1,
+            '-is-leaving': message.animationState === 2
+          }))}
+        >
+          <span>{message.content}</span>
+        </ToastMessage>
+      </ToastMessageWrapper>
     ))}
-  </ToastWrapper>)
+  </ToastSection>)
 })
 
-const ToastWrapper = styled.div`
+const ToastSection = styled.div`
   position: fixed;
   inset: auto 0 0;
   display: grid;
   grid-template-columns: 1fr;
-  grid-gap: 16px;
-  padding: 16px;
+`
+
+const ToastMessageWrapper = styled.div`
+  padding: 0 20px 20px;
 `
 
 const ToastMessage = styled.div`
@@ -98,6 +103,7 @@ const ToastMessage = styled.div`
   background-color: #222;
   color: #fff;
   max-width: 480px;
+  width: fit-content;
   margin: 0 auto;
   font-size: 16px;
   line-height: 24px;
