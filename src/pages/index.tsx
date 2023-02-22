@@ -20,38 +20,39 @@ export default function Home() {
   const modalRef = useRef<IModal>()
   const toastServiceRef = useRef()
   const modalTitle = moment().format('ll')
-  const [isLoading, setLoading] = useState(true)
+  const [isLoading, setLoading] = useState(false)
   const [content, setContent] = useState([])
-  const dataFetchedRef = useRef(false)
 
   const onAddActionHandler = () => modalRef.current?.open()
+
+  const fetchContent = async () => {
+    if (isLoading) return
+
+    setLoading(true)
+
+    try {
+      const response = await fetch('/api/weight-log')
+      const data = await response.json()
+
+      data.sort((a: ILogEntry, b: ILogEntry) => a.date > b.date ? -1 : 1)
+
+      setContent(data)
+      setLoading(false)
+    } catch (error) {
+      console.error(error)
+    }
+  }
 
   useEffect(() => {
     window.$toastService = toastServiceRef.current
 
-    const fetchContent = async () => {
-      if (dataFetchedRef.current) return
-      dataFetchedRef.current = true
-
-      try {
-        const response = await fetch('/api/weight-log')
-        const data = await response.json()
-
-        data.sort((a: ILogEntry, b: ILogEntry) => a.date > b.date ? -1 : 1)
-
-        setContent(data)
-        setLoading(false)
-      } catch (error) {
-        console.error(error)
-      }
-    }
-
     fetchContent()
-  })
+  }, [])
 
   const onFormSubmit = () => {
     modalRef.current?.close()
     window.$toastService.alert('data was successfully saved!', 'is-success')
+    fetchContent()
   }
 
   return (

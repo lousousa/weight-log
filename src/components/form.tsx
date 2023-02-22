@@ -35,6 +35,7 @@ export default function Form({ onSubmit }: IProps) {
       })
 
       setLoading(false)
+      onSubmit()
     } catch(error) {
       console.error('error', error)
     }
