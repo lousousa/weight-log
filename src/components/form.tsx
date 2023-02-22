@@ -56,7 +56,6 @@ export default function Form({ onSubmit }: IProps) {
           kg
         </FormText>
 
-
           <FormButton
             className={classNames({
               '-is-disabled': isLoading
