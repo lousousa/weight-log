@@ -33,6 +33,7 @@ export default function WeightInput({ setWeight, maxLength = 5 }:IProps) {
       onKeyUp={inputCaretToLastPosition}
       onClick={inputCaretToLastPosition}
       onChange={handleChange}
+      placeholder="00.0"
     />
   )
 }

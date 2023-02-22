@@ -1,4 +1,4 @@
-import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react'
+import { forwardRef, useImperativeHandle, useRef, useState } from 'react'
 import styled from 'styled-components'
 import classNames from 'classnames'
 import { fadeIn, fadeOut, slideUp, slideDown } from '@/commons/animations'

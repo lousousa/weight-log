@@ -27,14 +27,6 @@ export default function Form({ onSubmit }: IProps) {
 
     const date = moment().format('YYYY-MM-DD')
 
-    window.setTimeout(() => {
-      setLoading(false)
-
-      onSubmit()
-    }, 2000)
-
-    return
-
     try {
       await fetch('/api/weight-log', {
         method: 'POST',
