@@ -1,4 +1,4 @@
-import { forwardRef, useImperativeHandle, useState } from 'react'
+import { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
 import styled from 'styled-components'
 import classNames from 'classnames'
 import { fadeIn, fadeOut, slideUp, slideDown } from '@/commons/animations'
@@ -9,56 +9,71 @@ enum DisplayState {
 }
 
 type Message = {
-  key: number
+  id: number
   content: string
   type: string
-  animationState: DisplayState
+  animationState: DisplayState,
+  duration: number,
+  run?: () => void
 }
 
 const ToastService = forwardRef((_, ref) => {
-  const [currentKey, setCurrentKey] = useState(0)
+  const [queueId, setQueueId] = useState<number[]>([])
   const [messages, setMessages] = useState<Message[]>([])
 
   useImperativeHandle(ref, () => ({
-    alert(message: string, type = 'is-success', duration = 3000) {
-      if (!message) return
+    alert(content: string, type = 'is-success', duration = 3000) {
+      if (!content) return
 
       if (!['is-success', 'is-info', 'is-warning', 'is-error'].includes(type)) return
 
-      setCurrentKey(currentKey + 1)
-
       messages.push({
-        key: currentKey,
-        content: message,
+        id: new Date().valueOf(),
+        content,
         type,
-        animationState: 1
+        animationState: 1,
+        duration
       })
 
       setMessages([...messages])
-
-      setTimeout(() => {
-        const message = messages.find(message => message.key === currentKey)
-
-        if (message) {
-          message.animationState = 2
-          setMessages([...messages])
-        }
-      }, duration)
-
-      setTimeout(() => {
-        setMessages(messages.filter(message => message.key !== currentKey))
-      }, duration + 150)
     }
   }))
 
+  useEffect(() => {
+    if (queueId.length) {
+      setTimeout(() => {
+        const filtered = messages.filter(message => !queueId.includes(message.id))
+        setMessages([...filtered])
+      }, 150)
+    }
+  }, [queueId])
+
+  useEffect(() => {
+    if (messages.length) {
+      const current = messages[messages.length - 1]
+      if (queueId.includes(current.id)) return
+
+      current.run = () => {
+        setTimeout(() => {
+          current.animationState = 2
+
+          queueId.push(current.id)
+          setQueueId([...queueId])
+        }, current.duration)
+      }
+
+      current.run()
+    }
+  }, [messages])
+
   return (<ToastWrapper>
-    {messages.map((message, idx) => (
+    {messages.map((message) => (
       <ToastMessage
         className={`-${ message.type } `.concat(classNames({
           '-is-showing': message.animationState === 1,
           '-is-leaving': message.animationState === 2
         }))}
-        key={`toast_message_${idx}`}
+        key={`toast_message_${message.id}`}
       >
         <span>{message.content}</span>
       </ToastMessage>
@@ -68,18 +83,25 @@ const ToastService = forwardRef((_, ref) => {
 
 const ToastWrapper = styled.div`
   position: fixed;
-  inset: 100vh 0 0;
+  inset: auto 0 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 16px;
+  padding: 16px;
 `
 
 const ToastMessage = styled.div`
-  position: absolute;
-  inset: auto 16px 16px;
+  position: relative;
+  z-index: 999;
   padding: 12px;
   border-radius: 3px;
   background-color: #222;
   color: #fff;
   max-width: 480px;
   margin: 0 auto;
+  font-size: 16px;
+  line-height: 24px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .6);
 
   &.-is-showing {
     animation: ${slideUp} 150ms forwards, ${fadeIn} 150ms forwards;
@@ -87,6 +109,10 @@ const ToastMessage = styled.div`
 
   &.-is-leaving {
     animation: ${slideDown} 150ms forwards, ${fadeOut} 150ms forwards;
+  }
+
+  &.-is-removing {
+    display: none;
   }
 
   &.-is-success {

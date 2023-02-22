@@ -51,10 +51,7 @@ export default function Home() {
 
   const onFormSubmit = () => {
     modalRef.current?.close()
-    window.$toastService.alert('data was successfully saved!', 'is-success', 4000)
-    window.setTimeout(() => {
-      window.$toastService.alert('yes yes', 'is-info', 4000)
-    }, 1000)
+    window.$toastService.alert('data was successfully saved!')
   }
 
   return (
@@ -97,7 +94,7 @@ export default function Home() {
         <Modal
           ref={modalRef}
           title={modalTitle}
-          content={Form({ onSubmit: onFormSubmit })}
+          content={<Form onSubmit={onFormSubmit} />}
         />
 
         <ToastService
