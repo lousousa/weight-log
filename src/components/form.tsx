@@ -19,7 +19,7 @@ export default function Form({ onSubmit }: IProps) {
     e.preventDefault()
 
     if (weight.length < 4) {
-      window.$toastService.alert('enter a weight correctly', 'is-error')
+      window.$toastService.alert('enter a weight correctly.', 'is-error', 2000)
       return
     }
 

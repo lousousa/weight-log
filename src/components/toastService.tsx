@@ -1,4 +1,4 @@
-import { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
+import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react'
 import styled from 'styled-components'
 import classNames from 'classnames'
 import { fadeIn, fadeOut, slideUp, slideDown } from '@/commons/animations'
@@ -13,13 +13,37 @@ type Message = {
   content: string
   type: string
   animationState: DisplayState,
-  duration: number,
-  run?: () => void
+  duration: number
 }
 
 const ToastService = forwardRef((_, ref) => {
-  const [queueId, setQueueId] = useState<number[]>([])
-  const [messages, setMessages] = useState<Message[]>([])
+  const messages = useRef<Message[]>([])
+  const [tick, setTick] = useState(0)
+
+  const useForceUpdate = () => {
+    setTick(tick => tick + 1)
+  }
+
+  const removeMessage = (id: number) => {
+    messages.current = messages.current.filter(message => message.id !== id)
+    useForceUpdate()
+  }
+
+  const runToast = (id: number) => {
+    const current = messages.current.find(message => message.id === id)
+    if (!current) return
+
+    useForceUpdate()
+
+    setTimeout(() => {
+      current.animationState = 2
+      useForceUpdate()
+    }, current.duration)
+
+    setTimeout(() => {
+      removeMessage(id)
+    }, current.duration + 150)
+  }
 
   useImperativeHandle(ref, () => ({
     alert(content: string, type = 'is-success', duration = 3000) {
@@ -27,47 +51,22 @@ const ToastService = forwardRef((_, ref) => {
 
       if (!['is-success', 'is-info', 'is-warning', 'is-error'].includes(type)) return
 
-      messages.push({
-        id: new Date().valueOf(),
+      const id = new Date().valueOf()
+
+      messages.current.push({
+        id,
         content,
         type,
         animationState: 1,
         duration
       })
 
-      setMessages([...messages])
+      runToast(id)
     }
   }))
 
-  useEffect(() => {
-    if (queueId.length) {
-      setTimeout(() => {
-        const filtered = messages.filter(message => !queueId.includes(message.id))
-        setMessages([...filtered])
-      }, 150)
-    }
-  }, [queueId])
-
-  useEffect(() => {
-    if (messages.length) {
-      const current = messages[messages.length - 1]
-      if (queueId.includes(current.id)) return
-
-      current.run = () => {
-        setTimeout(() => {
-          current.animationState = 2
-
-          queueId.push(current.id)
-          setQueueId([...queueId])
-        }, current.duration)
-      }
-
-      current.run()
-    }
-  }, [messages])
-
   return (<ToastSection>
-    {messages.map((message) => (
+    {messages.current.map((message) => (
       <ToastMessageWrapper
         key={`toast_message_${message.id}`}
       >

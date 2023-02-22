@@ -51,7 +51,7 @@ export default function Home() {
 
   const onFormSubmit = () => {
     modalRef.current?.close()
-    window.$toastService.alert('data was successfully saved!')
+    window.$toastService.alert('data was successfully saved!', 'is-success')
   }
 
   return (
