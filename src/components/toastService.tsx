@@ -116,10 +116,6 @@ const ToastMessage = styled.div`
     animation: ${slideDown} 150ms forwards, ${fadeOut} 150ms forwards;
   }
 
-  &.-is-removing {
-    display: none;
-  }
-
   &.-is-success {
     background-color: #81BB24;
   }
