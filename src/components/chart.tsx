@@ -13,15 +13,21 @@ type CheckpointInfo = {
   data: ILogEntry
 }
 
+type NewMonthInfo = {
+  x: number,
+  month: string
+}
+
 export default function Chart({data}: IProps) {
   const canvas = useRef<HTMLCanvasElement | null>(null)
   const [checkpointsInfo, setCheckpointsInfo] = useState<CheckpointInfo[]>([])
+  const [newMonthsInfo, setNewMonthsInfo] = useState<NewMonthInfo[]>([])
 
   useEffect(() => {
     if (!canvas.current) return
 
     canvas.current.width = 1280
-    canvas.current.height = 360
+    canvas.current.height = 220
 
     const ctx = canvas.current.getContext('2d')
     if (!ctx) return
@@ -37,8 +43,9 @@ export default function Chart({data}: IProps) {
     })
 
     const xStep = canvas.current.width / (data.length - 1)
-    const yStep = (canvas.current.height - 3) / (maxValue - minValue)
+    const yStep = (canvas.current.height - 3 - 20) / (maxValue - minValue)
     const checkpointsInfo = []
+    const newMonthsInfo = []
 
     data = data.sort((a, b) => a.date < b.date ? -1 : 1)
 
@@ -57,12 +64,33 @@ export default function Chart({data}: IProps) {
       if (i === 0) checkpointsInfo.push({x: x1, y: y1, data: data[i]})
 
       checkpointsInfo.push({x: x2, y: y2, data: data[i + 1]})
+
+      const todaysMonth = moment(data[i].date).format('M')
+      const tomorrowsMonth = moment(data[i + 1].date).format('M')
+
+      if (i < data.length - 2 && todaysMonth !== tomorrowsMonth)
+        newMonthsInfo.push({
+          x: x2,
+          month: moment(data[i + 1].date).format('MMM')
+        })
     }
 
     setCheckpointsInfo(checkpointsInfo)
+    setNewMonthsInfo(newMonthsInfo)
 
     ctx.lineWidth = 3
     ctx.strokeStyle = '#eff2ff'
+    ctx.stroke()
+
+    newMonthsInfo.forEach(info => {
+      if (!canvas.current) return
+
+      ctx.moveTo(info.x, 0)
+      ctx.lineTo(info.x, canvas.current.height)
+    })
+
+    ctx.setLineDash([4, 4])
+    ctx.lineWidth = 1
     ctx.stroke()
   }, [canvas, data])
 
@@ -75,6 +103,15 @@ export default function Chart({data}: IProps) {
           key={idx}
           content={checkpointInfo}
         />
+      ))}
+
+      {newMonthsInfo.map((newMonthInfo, idx) => (
+        <NewMonthText
+          key={idx}
+          x={newMonthInfo.x}
+        >
+          {newMonthInfo.month}
+        </NewMonthText>
       ))}
     </ChartWrapper>
   </ChartSection>
@@ -130,4 +167,14 @@ const Dot = styled.div<{content: CheckpointInfo}>`
       font-size: 12px;
     }
   }
+`
+
+const NewMonthText = styled.div<{x: number}>`
+  ${props => `left: ${props.x + 16}px;`}
+
+  position: absolute;
+  font-size: 16px;
+  color: #eff2ff;
+  bottom: 18px;
+  margin-left: 8px;
 `
