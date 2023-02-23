@@ -58,7 +58,7 @@ export default function Chart({data}: IProps) {
     const newMonthsInfo = []
     const newWeeks = []
 
-    data = data.sort((a, b) => a.date < b.date ? -1 : 1)
+    data.sort((a, b) => a.date < b.date ? -1 : 1)
 
     for (let i = 0; i < data.length - 1; i++) {
       const current = parseFloat(data[i].weight)
