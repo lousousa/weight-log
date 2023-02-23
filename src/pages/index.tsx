@@ -114,8 +114,8 @@ const ContentSection = styled.div`
 `
 
 const ActionButton = styled.button`
-  width: 48px;
-  height: 48px;
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
   margin: 0 auto;
   display: flex;
