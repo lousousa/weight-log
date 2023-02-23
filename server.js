@@ -31,7 +31,7 @@ app
 
     server
       .use(passport.initialize())
-      .use(passport.authenticate('basic', { session: false }), (_, res, next) => next())
+      .use(passport.authenticate('basic', { session: true }), (_, res, next) => next())
       .get('*', (req, res) => handle(req, res))
       .post('*', (req, res) => handle(req, res))
       .listen(process.env.SERVER_PORT || 3000, (err) => {
