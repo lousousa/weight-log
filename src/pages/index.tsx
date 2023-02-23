@@ -66,7 +66,7 @@ export default function Home() {
       <Main>
         {isLoading && (
           <RingLoader
-            color='#0096c7'
+            color='#477cff'
             size='64px'
           />
         )}

@@ -26,11 +26,12 @@ export default function Chart({data}: IProps) {
   const [selectedDot, setSelectedDot] = useState<number>(data.length - 1)
 
   useEffect(() => {
-    const oWidth = chartWrapper.current?.offsetWidth
-    const sWidth = chartWrapper.current?.scrollWidth
+    if (!chartWrapper.current) return
 
-    if (oWidth && sWidth)
-      chartWrapper.current?.scrollTo(sWidth - oWidth, 0)
+    const {offsetWidth, scrollWidth} = chartWrapper.current
+
+    if (offsetWidth && scrollWidth)
+      chartWrapper.current?.scrollTo(scrollWidth - offsetWidth, 0)
   }, [chartWrapper, checkpointsInfo])
 
   useEffect(() => {
