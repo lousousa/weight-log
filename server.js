@@ -8,6 +8,7 @@ cli.nextStart(['-p', process.env.SERVER_PORT || 3000])
 */
 
 const express = require('express')
+const session = require('express-session')
 const Next = require('next')
 
 const app = Next({ dev: false })
@@ -24,13 +25,31 @@ passport.use(new BasicStrategy(
   }
 ))
 
+passport.serializeUser((user, done) => {
+  process.nextTick(function() {
+    return done(null, user)
+  })
+})
+
+passport.deserializeUser((user, done) => {
+  process.nextTick(function() {
+    return done(null, user)
+  });
+})
+
 app
   .prepare()
   .then(() => {
     const server = express()
 
     server
+      .use(session({
+        secret: process.env.BASIC_AUTH_PASSWORD,
+        resave: false,
+        saveUninitialized: true
+      }))
       .use(passport.initialize())
+      .use(passport.session())
       .use(passport.authenticate('basic', { session: true }), (_, res, next) => next())
       .get('*', (req, res) => handle(req, res))
       .post('*', (req, res) => handle(req, res))
