@@ -18,7 +18,6 @@
 # misc
 .DS_Store
 *.pem
-/sessions
 
 # debug
 npm-debug.log*
