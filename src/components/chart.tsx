@@ -37,8 +37,10 @@ export default function Chart({data}: IProps) {
   useEffect(() => {
     if (!canvas.current) return
 
-    canvas.current.width = 960
-    canvas.current.height = 160
+    const xStep = 20
+
+    canvas.current.width = (data.length - 1) * xStep
+    canvas.current.height = 148
 
     const ctx = canvas.current.getContext('2d')
     if (!ctx) return
@@ -53,7 +55,6 @@ export default function Chart({data}: IProps) {
       if (parsed > maxValue) maxValue = parsed
     })
 
-    const xStep = canvas.current.width / (data.length - 1)
     const yStep = (canvas.current.height - 3 - 20) / (maxValue - minValue)
     const checkpointsInfo = []
     const newMonthsInfo = []
@@ -166,7 +167,21 @@ const ChartWrapper = styled.div`
   border-radius: 8px;
   position: relative;
   width: 100%;
+  max-width: 1280px;
   overflow-x: auto;
+
+  &::-webkit-scrollbar {
+    height: .6rem;
+  }
+
+  &::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #ddd;
+    outline: none;
+  }
 `
 
 const Dot = styled.div<{content: CheckpointInfo}>`
