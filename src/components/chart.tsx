@@ -38,7 +38,7 @@ export default function Chart({data}: IProps) {
     if (!canvas.current) return
 
     canvas.current.width = 960
-    canvas.current.height = 220
+    canvas.current.height = 160
 
     const ctx = canvas.current.getContext('2d')
     if (!ctx) return
@@ -162,7 +162,7 @@ const ChartSection = styled.div`
 
 const ChartWrapper = styled.div`
   background-color: #477cff;
-  padding: 16px 74px;
+  padding: 50px 74px;
   border-radius: 8px;
   position: relative;
   width: 100%;
@@ -172,7 +172,7 @@ const ChartWrapper = styled.div`
 const Dot = styled.div<{content: CheckpointInfo}>`
   ${props => `
     --left: ${props.content.x + 74 - 5}px;
-    --top: ${props.content.y + 16 - 5}px;
+    --top: ${props.content.y + 50 - 5}px;
   `}
 
   position: absolute;
@@ -199,6 +199,7 @@ const Dot = styled.div<{content: CheckpointInfo}>`
       `}
 
       position: absolute;
+      white-space: nowrap;
       top: -40px;
       left: -55px;
       width: 110px;
@@ -218,6 +219,6 @@ const NewMonthText = styled.div<{x: number}>`
   position: absolute;
   font-size: 16px;
   color: #eff2ff;
-  bottom: 18px;
+  bottom: 52px;
   margin-left: 8px;
 `
