@@ -106,7 +106,7 @@ const ToastMessage = styled.div`
   margin: 0 auto;
   font-size: 16px;
   line-height: 24px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, .6);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, .5);
 
   &.-is-showing {
     animation: ${slideUp} 150ms forwards, ${fadeIn} 150ms forwards;
