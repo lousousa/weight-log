@@ -20,8 +20,17 @@ type NewMonthInfo = {
 
 export default function Chart({data}: IProps) {
   const canvas = useRef<HTMLCanvasElement | null>(null)
+  const chartWrapper = useRef<HTMLDivElement | null>(null)
   const [checkpointsInfo, setCheckpointsInfo] = useState<CheckpointInfo[]>([])
   const [newMonthsInfo, setNewMonthsInfo] = useState<NewMonthInfo[]>([])
+
+  useEffect(() => {
+    const oWidth = chartWrapper.current?.offsetWidth
+    const sWidth = chartWrapper.current?.scrollWidth
+
+    if (oWidth && sWidth)
+      chartWrapper.current?.scrollTo(sWidth - oWidth, 0)
+  }, [chartWrapper, checkpointsInfo])
 
   useEffect(() => {
     if (!canvas.current) return
@@ -108,11 +117,16 @@ export default function Chart({data}: IProps) {
   }, [canvas, data])
 
   return <ChartSection>
-    <ChartWrapper>
-      <canvas ref={canvas}/>
+    <ChartWrapper
+      ref={chartWrapper}
+    >
+      <canvas
+        ref={canvas}
+      />
 
       {checkpointsInfo.map((checkpointInfo, idx) => (
         <Dot
+          className="chart-dot"
           key={idx}
           content={checkpointInfo}
         />
@@ -132,19 +146,21 @@ export default function Chart({data}: IProps) {
 
 const ChartSection = styled.div`
   padding: 16px;
+  width: 100%;
 `
 
 const ChartWrapper = styled.div`
   background-color: #477cff;
-  padding: 16px;
+  padding: 16px 74px;
   border-radius: 8px;
   position: relative;
+  width: 100%;
+  overflow-x: auto;
 `
 
 const Dot = styled.div<{content: CheckpointInfo}>`
   ${props => `
-    // 16 = wrapper's padding; 5 = half dot size.
-    --left: ${props.content.x + 16 - 5}px;
+    --left: ${props.content.x + 74 - 5}px;
     --top: ${props.content.y + 16 - 5}px;
   `}
 
@@ -183,7 +199,7 @@ const Dot = styled.div<{content: CheckpointInfo}>`
 `
 
 const NewMonthText = styled.div<{x: number}>`
-  ${props => `left: ${props.x + 16}px;`}
+  ${props => `left: ${props.x + 74}px;`}
 
   position: absolute;
   font-size: 16px;

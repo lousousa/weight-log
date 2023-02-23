@@ -103,12 +103,13 @@ const Main = styled.main`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 2rem;
+  padding: 2rem 0;
   min-height: 100vh;
 `
 
 const ContentSection = styled.div`
   text-align: center;
+  max-width: 100%;
   animation: ${fadeIn} 250ms forwards, ${slideUp} 125ms forwards;
 `
 
