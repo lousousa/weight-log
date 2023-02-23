@@ -46,6 +46,7 @@ export default function Chart({data}: IProps) {
     const yStep = (canvas.current.height - 3 - 20) / (maxValue - minValue)
     const checkpointsInfo = []
     const newMonthsInfo = []
+    const newWeeks = []
 
     data = data.sort((a, b) => a.date < b.date ? -1 : 1)
 
@@ -73,6 +74,9 @@ export default function Chart({data}: IProps) {
           x: x2,
           month: moment(data[i + 1].date).format('MMM')
         })
+
+      const todaysWeekday = moment(data[i].date).format('d')
+      if (todaysWeekday === '0') newWeeks.push(x1)
     }
 
     setCheckpointsInfo(checkpointsInfo)
@@ -90,6 +94,15 @@ export default function Chart({data}: IProps) {
     })
 
     ctx.setLineDash([4, 4])
+    ctx.stroke()
+
+    newWeeks.forEach(x => {
+      if (!canvas.current) return
+
+      ctx.moveTo(x, 0)
+      ctx.lineTo(x, canvas.current.height)
+    })
+
     ctx.lineWidth = 1
     ctx.stroke()
   }, [canvas, data])
