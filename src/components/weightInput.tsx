@@ -23,7 +23,7 @@ export default function WeightInput({ setWeight, maxLength = 5 }:IProps) {
     if (value.length > 1) value = `${ value.substring(0, value.length - 1) }.${ value.substring(value.length - 1) }`
 
     if (inputRef.current) inputRef.current.value = value
-    setWeight(parseFloat(value).toString())
+    setWeight(parseFloat(value).toFixed(1))
   }
 
   return (
