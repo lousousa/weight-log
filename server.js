@@ -45,8 +45,9 @@ app
     server
       .use(session({
         secret: process.env.BASIC_AUTH_PASSWORD,
-        resave: false,
-        saveUninitialized: true
+        resave: true,
+        saveUninitialized: true,
+        cookie: { secure: true }
       }))
       .use(passport.initialize())
       .use(passport.session())
