@@ -45,7 +45,7 @@ app
     server
       .use(session({
         secret: process.env.BASIC_AUTH_PASSWORD,
-        resave: true,
+        resave: false,
         saveUninitialized: true,
         cookie: { secure: true }
       }))
