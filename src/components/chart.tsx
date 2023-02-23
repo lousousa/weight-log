@@ -23,6 +23,7 @@ export default function Chart({data}: IProps) {
   const chartWrapper = useRef<HTMLDivElement | null>(null)
   const [checkpointsInfo, setCheckpointsInfo] = useState<CheckpointInfo[]>([])
   const [newMonthsInfo, setNewMonthsInfo] = useState<NewMonthInfo[]>([])
+  const [selectedDot, setSelectedDot] = useState<number>(data.length - 1)
 
   useEffect(() => {
     const oWidth = chartWrapper.current?.offsetWidth
@@ -35,7 +36,7 @@ export default function Chart({data}: IProps) {
   useEffect(() => {
     if (!canvas.current) return
 
-    canvas.current.width = 1280
+    canvas.current.width = 960
     canvas.current.height = 220
 
     const ctx = canvas.current.getContext('2d')
@@ -116,6 +117,13 @@ export default function Chart({data}: IProps) {
     ctx.stroke()
   }, [canvas, data])
 
+  const onSelectDot = (e: React.SyntheticEvent) => {
+    if (!(e.target instanceof HTMLDivElement)) return
+
+    if (e.target.dataset.value)
+      setSelectedDot(parseInt(e.target.dataset.value))
+  }
+
   return <ChartSection>
     <ChartWrapper
       ref={chartWrapper}
@@ -126,9 +134,11 @@ export default function Chart({data}: IProps) {
 
       {checkpointsInfo.map((checkpointInfo, idx) => (
         <Dot
-          className="chart-dot"
+          className={`${idx === selectedDot ? '-is-selected' : ''}`}
           key={idx}
           content={checkpointInfo}
+          onClick={onSelectDot}
+          data-value={idx}
         />
       ))}
 
@@ -174,10 +184,13 @@ const Dot = styled.div<{content: CheckpointInfo}>`
   cursor: pointer;
   box-sizing: content-box;
 
-  &:hover {
+  &:hover,
+  &.-is-selected {
     border: 4px solid #222;
     margin: -4px 0 0 -4px;
+  }
 
+  &.-is-selected {
     &::before {
       ${props => `
         content: '${props.content.data.weight} -
