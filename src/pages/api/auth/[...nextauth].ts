@@ -16,9 +16,6 @@ export default NextAuth({
         return allowList.includes(user.email || '')
 
       return false
-    },
-    async jwt({ token }) {
-      return token
     }
   },
   theme: {
