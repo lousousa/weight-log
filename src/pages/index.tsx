@@ -5,6 +5,7 @@ import moment from 'moment'
 import { PlusIcon } from '@/commons/icons'
 import { ILogEntry } from '@/types'
 import { fadeIn, slideUp } from '../commons/animations'
+import { getSession, signOut } from 'next-auth/react'
 
 import Modal from '@/components/modal'
 import Form from '@/components/form'
@@ -12,6 +13,7 @@ import RingLoader from '@/components/ringLoader'
 import ToastService from '@/components/toastService'
 import Chart from '@/components/chart'
 import MonthlyAverage from '@/components/monthlyAverage'
+import { GetServerSidePropsContext } from 'next'
 
 interface IModal {
   open: () => void
@@ -85,6 +87,8 @@ export default function Home() {
             >
               <PlusIcon />
             </ActionButton>
+
+            <button onClick={() => signOut()}>sign out</button>
           </ContentSection>
         )}
 
@@ -100,6 +104,21 @@ export default function Home() {
       </Main>
     </>
   )
+}
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const session = await getSession(context)
+
+  if (!session)
+    return {
+      redirect: {
+        destination: '/auth/signin'
+      }
+    }
+
+  return {
+    props: { session }
+  }
 }
 
 const Main = styled.main`
