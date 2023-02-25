@@ -42,7 +42,10 @@ async function getData() {
 }
 
 async function addEntry(entry: ILogEntry) {
-  const { sheet, lastRowNumber } = await loadSheet()
+  let { sheet, lastRowNumber } = await loadSheet()
+
+  const previousDate = sheet.getCell(lastRowNumber - 1, 0).value
+  if (previousDate === entry.date) lastRowNumber -= 1
 
   sheet.getCell(lastRowNumber, 0).value = entry.date
   sheet.getCell(lastRowNumber, 1).value = entry.weight
