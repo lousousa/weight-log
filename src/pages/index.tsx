@@ -11,6 +11,7 @@ import Form from '@/components/form'
 import RingLoader from '@/components/ringLoader'
 import ToastService from '@/components/toastService'
 import Chart from '@/components/chart'
+import MonthlyAverage from '@/components/monthlyAverage'
 
 interface IModal {
   open: () => void
@@ -77,6 +78,8 @@ export default function Home() {
 
             <Chart data={content} />
 
+            <MonthlyAverage data={content} />
+
             <ActionButton
               onClick={onAddActionHandler}
             >
@@ -117,7 +120,7 @@ const ActionButton = styled.button`
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  margin: 0 auto;
+  margin: 24px auto 0;
   display: flex;
   position: relative;
   justify-content: center;
