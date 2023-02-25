@@ -13,7 +13,7 @@ import RingLoader from '@/components/ringLoader'
 import ToastService from '@/components/toastService'
 import Chart from '@/components/chart'
 import MonthlyAverage from '@/components/monthlyAverage'
-import { IncomingMessage } from 'http'
+import { GetServerSidePropsContext } from 'next'
 
 interface IModal {
   open: () => void
@@ -106,7 +106,7 @@ export default function Home() {
   )
 }
 
-export async function getServerSideProps(context: { req: IncomingMessage }) {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getSession(context)
 
   if (!session)
