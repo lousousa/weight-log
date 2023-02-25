@@ -5,7 +5,7 @@ import moment from 'moment'
 import { PlusIcon } from '@/commons/icons'
 import { ILogEntry } from '@/types'
 import { fadeIn, slideUp } from '../commons/animations'
-import { getSession } from 'next-auth/react'
+import { getSession, signOut } from 'next-auth/react'
 
 import Modal from '@/components/modal'
 import Form from '@/components/form'
@@ -87,6 +87,8 @@ export default function Home() {
             >
               <PlusIcon />
             </ActionButton>
+
+            <button onClick={() => signOut()}>sign out</button>
           </ContentSection>
         )}
 
@@ -110,7 +112,7 @@ export async function getServerSideProps(context: { req: IncomingMessage }) {
   if (!session)
     return {
       redirect: {
-        destination: '/login'
+        destination: '/auth/signin'
       }
     }
 
