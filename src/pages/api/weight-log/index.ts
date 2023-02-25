@@ -1,3 +1,4 @@
+import { getSession } from "next-auth/react"
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { ILogEntry } from '@/types'
 
@@ -54,12 +55,23 @@ async function addEntry(entry: ILogEntry) {
 }
 
 router.get(async (req: NextApiRequest, res: NextApiResponse<any>) => {
-  res.status(200).json(await getData())
+  const session = await getSession({ req })
+
+  if (session)
+    return res.status(200).json(await getData())
+
+  return res.status(401).send('401 unauthorized')
 })
 
 router.post(async (req: NextApiRequest, res: NextApiResponse<any>) => {
-  await addEntry(req.body)
-  res.status(200).json({ success: true })
+  const session = await getSession({ req })
+
+  if (session) {
+    await addEntry(req.body)
+    res.status(200).json({ success: true })
+  }
+
+  return res.status(401).send('401 unauthorized')
 })
 
 export default router
