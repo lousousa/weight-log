@@ -68,7 +68,7 @@ router.post(async (req: NextApiRequest, res: NextApiResponse<any>) => {
 
   if (session) {
     await addEntry(req.body)
-    res.status(200).json({ success: true })
+    return res.status(200).json({ success: true })
   }
 
   return res.status(401).send('401 unauthorized')

@@ -25,19 +25,23 @@ export default function Summary({data}: IProps) {
       const todaysMonth = moment(data[i].date).format('MM/YYYY')
 
       if (i === data.length - 1) {
-        averages.push({ month: data[i - 1].date, average: currentSum / currentCount })
+        ++currentCount
+        currentSum += parseFloat(data[i].weight)
+
+        averages.push({ month: data[i].date, average: currentSum / currentCount })
         continue
       }
 
       if (yesterdaysMonth !== todaysMonth) {
         averages.push({ month: data[i - 1].date, average: currentSum / currentCount })
-        currentSum = parseFloat(data[i].weight)
+
         currentCount = 1
+        currentSum = parseFloat(data[i].weight)
         continue
       }
 
+      ++currentCount
       currentSum += parseFloat(data[i].weight)
-      currentCount++
     }
 
     setAverages(averages)
