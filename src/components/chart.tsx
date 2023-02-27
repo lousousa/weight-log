@@ -157,7 +157,7 @@ export default function Chart({data}: IProps) {
 }
 
 const ChartSection = styled.div`
-  padding: 16px;
+  padding: 16px 0;
   width: 100%;
 `
 

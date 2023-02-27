@@ -68,15 +68,23 @@ export default function Home() {
 
       <Main>
         {isLoading && (
-          <RingLoader
-            color='#477cff'
-            size='64px'
-          />
+          <RingLoaderWrapper>
+            <RingLoader
+              color='#e4e7f5'
+              size='64px'
+            />
+          </RingLoaderWrapper>
         )}
 
         {!isLoading && (
           <ContentSection>
-            <h1>welcome</h1>
+            <ContentHeader>
+              <h1>overview</h1>
+
+              <SignOutButton onClick={() => signOut()}>
+                sign out
+              </SignOutButton>
+            </ContentHeader>
 
             <Chart data={content} />
 
@@ -87,8 +95,6 @@ export default function Home() {
             >
               <PlusIcon />
             </ActionButton>
-
-            <button onClick={() => signOut()}>sign out</button>
           </ContentSection>
         )}
 
@@ -122,17 +128,37 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 }
 
 const Main = styled.main`
+  background: linear-gradient(to top, #2146d1, #477cff);
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 2rem 0;
-  min-height: 100vh;
+  padding: 40px 0;
+  color: #222222;
 `
 
 const ContentSection = styled.div`
-  text-align: center;
+  width: 1280px;
   max-width: 100%;
+  height: fit-content;
   animation: ${fadeIn} 250ms forwards, ${slideUp} 125ms forwards;
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 40px;
+`
+
+const ContentHeader = styled.header`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`
+
+const SignOutButton = styled.button`
+  height: fit-content;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: #2146d1;
 `
 
 const ActionButton = styled.button`
@@ -154,4 +180,10 @@ const ActionButton = styled.button`
     margin: 0 auto;
     color: #fff;
   }
+`
+
+const RingLoaderWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `
