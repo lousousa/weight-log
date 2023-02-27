@@ -191,7 +191,7 @@ const TitleText = styled.h1`
 const ContentHeader = styled.header`
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
 `
 
 const UserImageWrapper = styled.div`
