@@ -69,7 +69,7 @@ const ModalWrapper = styled.main`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 16px;
+  padding: 10px;
   animation: ${fadeIn} 125ms forwards;
 
   > div {

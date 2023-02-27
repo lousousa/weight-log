@@ -94,7 +94,9 @@ export default function Home() {
         {!isLoading && (
           <ContentSection>
             <ContentHeader>
-              <h1>overview</h1>
+              <TitleText>
+                overview
+              </TitleText>
 
               <SignOutWrapper>
                 {user?.image && (
@@ -181,6 +183,11 @@ const ContentSection = styled.div`
   }
 `
 
+const TitleText = styled.h1`
+  font-size: 24px;
+  line-height: 32px;
+`
+
 const ContentHeader = styled.header`
   display: flex;
   justify-content: space-between;
@@ -208,6 +215,7 @@ const SignOutButton = styled.button`
   cursor: pointer;
   color: #2146d1;
   margin-top: 4px;
+  display: none;
 `
 
 const ActionButton = styled.button`
