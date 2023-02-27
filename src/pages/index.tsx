@@ -5,7 +5,9 @@ import moment from 'moment'
 import { PlusIcon } from '@/commons/icons'
 import { ILogEntry } from '@/types'
 import { fadeIn, slideUp } from '../commons/animations'
-import { getSession, signOut } from 'next-auth/react'
+import { getSession, useSession, signOut } from 'next-auth/react'
+import { DefaultSession } from 'next-auth'
+import Image from 'next/image'
 
 import Modal from '@/components/modal'
 import Form from '@/components/form'
@@ -26,6 +28,8 @@ export default function Home() {
   const modalTitle = moment().format('ll')
   const [isLoading, setLoading] = useState(true)
   const [content, setContent] = useState([])
+  const [user, setUser] = useState<DefaultSession['user'] | null | undefined>(null)
+  const { data: session } = useSession()
 
   const onAddActionHandler = () => modalRef.current?.open()
 
@@ -51,10 +55,21 @@ export default function Home() {
     fetchContent()
   }, [fetchContent])
 
+  useEffect(() => {
+    if (session) {
+      setUser(session.user)
+    }
+  }, [session])
+
   const onFormSubmit = () => {
     modalRef.current?.close()
     window.$toastService.alert('data was successfully saved!', 'is-success')
     fetchContent()
+  }
+
+  const handleSignOut = () => {
+    setLoading(true)
+    signOut()
   }
 
   return (
@@ -81,9 +96,24 @@ export default function Home() {
             <ContentHeader>
               <h1>overview</h1>
 
-              <SignOutButton onClick={() => signOut()}>
-                sign out
-              </SignOutButton>
+              <SignOutWrapper>
+                {user?.image && (
+                  <UserImageWrapper>
+                    <Image
+                      src={user.image}
+                      alt=''
+                      width={40}
+                      height={40}
+                    />
+                  </UserImageWrapper>
+                )}
+
+                <SignOutButton
+                  onClick={() => handleSignOut()}
+                >
+                  sign out
+                </SignOutButton>
+              </SignOutWrapper>
             </ContentHeader>
 
             <Chart data={content} />
@@ -128,12 +158,12 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 }
 
 const Main = styled.main`
-  background: linear-gradient(to top, #2146d1, #477cff);
+  background-color: #477cff;
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 40px 0;
+  padding: 40px 16px;
   color: #222222;
 `
 
@@ -144,13 +174,31 @@ const ContentSection = styled.div`
   animation: ${fadeIn} 250ms forwards, ${slideUp} 125ms forwards;
   background-color: #fff;
   border-radius: 12px;
-  padding: 40px;
+  padding: 16px;
+
+  @media screen and (min-width: 600px) {
+    padding: 40px;
+  }
 `
 
 const ContentHeader = styled.header`
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
+`
+
+const UserImageWrapper = styled.div`
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+`
+
+const SignOutWrapper = styled.div`
+  width: 60px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: end;
 `
 
 const SignOutButton = styled.button`
@@ -159,6 +207,7 @@ const SignOutButton = styled.button`
   background: none;
   cursor: pointer;
   color: #2146d1;
+  margin-top: 4px;
 `
 
 const ActionButton = styled.button`
