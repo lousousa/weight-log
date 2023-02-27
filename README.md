@@ -26,12 +26,16 @@ This application is focused on simplifying the task of saving log entries for da
 
  ![image](https://user-images.githubusercontent.com/2921281/221711464-73155a9a-af19-4353-af90-41a4bbb628ac.png)
 
-- **1.2.** Go to [Google Console](https://console.cloud.google.com/apis/credentials), create a new **service account** credential, then add the following variables to the `.env` file on the root project:
- - `GOOGLE_SPREADSHEET_ID`
+- **1.2.** Add the variable `GOOGLE_SPREADSHEET_ID` to the `.env` file on the root project, by taking the following URL param:
+```
+https://docs.google.com/spreadsheets/d/GOOGLE_SPREADSHEET_ID
+```
+
+- **1.3.** Go to [Google Console](https://console.cloud.google.com/apis/credentials), create a new **service account** credential, then add the following variables to the `.env` file:
  - `GOOGLE_SERVICE_ACCOUNT_EMAIL`
  - `GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY`
 
-- **1.3.** Go back to the Google Sheets document and share it with the same `GOOGLE_SERVICE_ACCOUNT_EMAIL`, allowing sharing as an **editor** role.
+- **1.4.** Go back to the Google Sheets document and share it with the same `GOOGLE_SERVICE_ACCOUNT_EMAIL`, allowing sharing as an **editor** role.
 
 #### 2. Configure Google OAuth client ID
 
