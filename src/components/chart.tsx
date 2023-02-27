@@ -149,7 +149,7 @@ export default function Chart({data}: IProps) {
           key={idx}
           x={newMonthInfo.x}
         >
-          {newMonthInfo.month}
+          {newMonthInfo.month.toLowerCase()}
         </NewMonthText>
       ))}
     </ChartWrapper>
@@ -157,12 +157,12 @@ export default function Chart({data}: IProps) {
 }
 
 const ChartSection = styled.div`
-  padding: 16px;
+  padding: 16px 0;
   width: 100%;
 `
 
 const ChartWrapper = styled.div`
-  background-color: #477cff;
+  background-color: #2146d1;
   padding: 50px 74px;
   border-radius: 8px;
   position: relative;
@@ -202,7 +202,7 @@ const Dot = styled.div<{content: CheckpointInfo}>`
 
   &:hover,
   &.-is-selected {
-    border: 4px solid #222;
+    border: 4px solid #000;
     margin: -4px 0 0 -4px;
   }
 
@@ -210,7 +210,7 @@ const Dot = styled.div<{content: CheckpointInfo}>`
     &::before {
       ${props => `
         content: '${props.content.data.weight} -
-          ${moment(props.content.data.date).format('ll')}';
+          ${moment(props.content.data.date).format('ll').toLowerCase()}';
       `}
 
       position: absolute;
@@ -220,7 +220,7 @@ const Dot = styled.div<{content: CheckpointInfo}>`
       width: 110px;
       padding: 8px;
       z-index: 2;
-      background: linear-gradient(to top, #222, #444);
+      background: linear-gradient(to top, #000, #222);
       color: #ddd;
       border-radius: 4px;
       font-size: 12px;

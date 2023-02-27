@@ -5,7 +5,9 @@ import moment from 'moment'
 import { PlusIcon } from '@/commons/icons'
 import { ILogEntry } from '@/types'
 import { fadeIn, slideUp } from '../commons/animations'
-import { getSession, signOut } from 'next-auth/react'
+import { getSession, useSession, signOut } from 'next-auth/react'
+import { DefaultSession } from 'next-auth'
+import Image from 'next/image'
 
 import Modal from '@/components/modal'
 import Form from '@/components/form'
@@ -26,6 +28,8 @@ export default function Home() {
   const modalTitle = moment().format('ll')
   const [isLoading, setLoading] = useState(true)
   const [content, setContent] = useState([])
+  const [user, setUser] = useState<DefaultSession['user'] | null | undefined>(null)
+  const { data: session } = useSession()
 
   const onAddActionHandler = () => modalRef.current?.open()
 
@@ -51,10 +55,21 @@ export default function Home() {
     fetchContent()
   }, [fetchContent])
 
+  useEffect(() => {
+    if (session) {
+      setUser(session.user)
+    }
+  }, [session])
+
   const onFormSubmit = () => {
     modalRef.current?.close()
     window.$toastService.alert('data was successfully saved!', 'is-success')
     fetchContent()
+  }
+
+  const handleSignOut = () => {
+    setLoading(true)
+    signOut()
   }
 
   return (
@@ -68,15 +83,40 @@ export default function Home() {
 
       <Main>
         {isLoading && (
-          <RingLoader
-            color='#477cff'
-            size='64px'
-          />
+          <RingLoaderWrapper>
+            <RingLoader
+              color='#e4e7f5'
+              size='64px'
+            />
+          </RingLoaderWrapper>
         )}
 
         {!isLoading && (
           <ContentSection>
-            <h1>welcome</h1>
+            <ContentHeader>
+              <TitleText>
+                overview
+              </TitleText>
+
+              <SignOutWrapper>
+                {user?.image && (
+                  <UserImageWrapper>
+                    <Image
+                      src={user.image}
+                      alt=''
+                      width={40}
+                      height={40}
+                    />
+                  </UserImageWrapper>
+                )}
+
+                <SignOutButton
+                  onClick={() => handleSignOut()}
+                >
+                  sign out
+                </SignOutButton>
+              </SignOutWrapper>
+            </ContentHeader>
 
             <Chart data={content} />
 
@@ -87,8 +127,6 @@ export default function Home() {
             >
               <PlusIcon />
             </ActionButton>
-
-            <button onClick={() => signOut()}>sign out</button>
           </ContentSection>
         )}
 
@@ -122,17 +160,62 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 }
 
 const Main = styled.main`
+  background-color: #477cff;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 2rem 0;
-  min-height: 100vh;
+  padding: 40px 16px;
+  color: #222222;
 `
 
 const ContentSection = styled.div`
-  text-align: center;
+  width: 1280px;
   max-width: 100%;
+  height: fit-content;
   animation: ${fadeIn} 250ms forwards, ${slideUp} 125ms forwards;
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 16px;
+
+  @media screen and (min-width: 600px) {
+    padding: 40px;
+  }
+`
+
+const TitleText = styled.h1`
+  font-size: 24px;
+  line-height: 32px;
+`
+
+const ContentHeader = styled.header`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`
+
+const UserImageWrapper = styled.div`
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+`
+
+const SignOutWrapper = styled.div`
+  width: 60px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: end;
+`
+
+const SignOutButton = styled.button`
+  height: fit-content;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: #2146d1;
+  margin-top: 4px;
+  display: none;
 `
 
 const ActionButton = styled.button`
@@ -144,7 +227,7 @@ const ActionButton = styled.button`
   position: relative;
   justify-content: center;
   align-items: center;
-  background-color: #FF3E45;
+  background-color: #7209b7;
   border: none;
   cursor: pointer;
   box-shadow: 0 2px 4px #666;
@@ -154,4 +237,10 @@ const ActionButton = styled.button`
     margin: 0 auto;
     color: #fff;
   }
+`
+
+const RingLoaderWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `
