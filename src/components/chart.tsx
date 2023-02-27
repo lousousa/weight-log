@@ -221,6 +221,7 @@ const Dot = styled.div<{content: CheckpointInfo}>`
       padding: 8px;
       z-index: 2;
       background: linear-gradient(to top, #000, #222);
+      text-align: center;
       color: #ddd;
       border-radius: 4px;
       font-size: 12px;

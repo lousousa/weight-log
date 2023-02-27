@@ -165,8 +165,12 @@ const Main = styled.main`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 40px 16px;
+  padding: 16px;
   color: #222222;
+
+  @media screen and (min-width: 600px) {
+    padding: 40px 16px;
+  }
 `
 
 const ContentSection = styled.div`
