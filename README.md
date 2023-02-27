@@ -26,7 +26,7 @@ This application is focused on simplifying the task of saving log entries for da
 
  ![image](https://user-images.githubusercontent.com/2921281/221711464-73155a9a-af19-4353-af90-41a4bbb628ac.png)
 
-- **1.2.** Add the variable `GOOGLE_SPREADSHEET_ID` to the `.env` file on the root project, by getting the following URL param on the created document:
+- **1.2.** Add the variable `GOOGLE_SPREADSHEET_ID` to the `.env` file on the project root, by getting the following URL param on the created document:
 ```
 https://docs.google.com/spreadsheets/d/GOOGLE_SPREADSHEET_ID
 ```
