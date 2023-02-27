@@ -160,7 +160,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 }
 
 const Main = styled.main`
-  background-color: #477cff;
   min-height: 100vh;
   display: flex;
   justify-content: center;
@@ -169,6 +168,7 @@ const Main = styled.main`
 
   @media screen and (min-width: 600px) {
     padding: 40px 0;
+    background-color: #477cff;
   }
 `
 
