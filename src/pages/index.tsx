@@ -25,7 +25,7 @@ interface IModal {
 export default function Home() {
   const modalRef = useRef<IModal>()
   const toastServiceRef = useRef()
-  const modalTitle = moment().format('ll')
+  const modalTitle = moment().format('ll').toLowerCase()
   const [isLoading, setLoading] = useState(true)
   const [content, setContent] = useState([])
   const [user, setUser] = useState<DefaultSession['user'] | null | undefined>(null)
@@ -165,11 +165,10 @@ const Main = styled.main`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 16px;
   color: #222222;
 
   @media screen and (min-width: 600px) {
-    padding: 40px 16px;
+    padding: 40px 0;
   }
 `
 
@@ -179,11 +178,11 @@ const ContentSection = styled.div`
   height: fit-content;
   animation: ${fadeIn} 250ms forwards, ${slideUp} 125ms forwards;
   background-color: #fff;
-  border-radius: 12px;
   padding: 16px;
 
   @media screen and (min-width: 600px) {
     padding: 40px;
+    border-radius: 12px;
   }
 `
 
