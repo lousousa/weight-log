@@ -20,7 +20,7 @@ This application is focused on simplifying the task of saving log entries for da
 
 ## Getting Started
 
-#### 1. Configure Google Sheets
+### 1. Configure Google Sheets
 
 - **1.1.** Create a [Google Sheets](https://sheets.google.com) document in this structure, each row containing a **date** column (YYYY-MM-DD) and then a **weight** column (a number with 1 decimal place):
 
@@ -38,7 +38,7 @@ https://docs.google.com/spreadsheets/d/GOOGLE_SPREADSHEET_ID
 
 - **1.4.** Go back to the Google Sheets document and share it with the same `GOOGLE_SERVICE_ACCOUNT_EMAIL`, allowing sharing as an **editor** role.
 
-#### 2. Configure Google OAuth client ID
+### 2. Configure Google OAuth client ID
 
 - **2.1.** Go again to [Google Console](https://console.cloud.google.com/apis/credentials), create a new **Oauth client ID** credential, and then enable the *localhost* and *remote host* access on its ID settings.
 
@@ -47,7 +47,7 @@ https://docs.google.com/spreadsheets/d/GOOGLE_SPREADSHEET_ID
   * `GOOGLE_OAUTH2_CLIENT_ID`
   * `GOOGLE_OAUTH2_CLIENT_SECRET`
 
-#### 3. Set remaining environment variables
+### 3. Set remaining environment variables
 
 - `JWT_SECRET`: a secret key required by Next Auth, that can be obtained by typing on terminal:
 
@@ -61,7 +61,7 @@ openssl rand -base64 32
 
 - `NEXTAUTH_URL`: the URL used for the application in production (required by Next Auth).
 
-#### 4. Run the development server
+### 4. Run the development server
 
 ```bash
 yarn install
