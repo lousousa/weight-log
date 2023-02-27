@@ -71,7 +71,7 @@ export default function Summary({data}: IProps) {
   return (
     <div>
       <TitleText>
-        montly average
+        monthly average
       </TitleText>
 
       <BarsSection>
