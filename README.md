@@ -32,8 +32,9 @@ https://docs.google.com/spreadsheets/d/GOOGLE_SPREADSHEET_ID
 ```
 
 - **1.3.** Go to [Google Console](https://console.cloud.google.com/apis/credentials), create a new **service account** credential, then add the following variables to the `.env` file:
- - `GOOGLE_SERVICE_ACCOUNT_EMAIL`
- - `GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY`
+
+ * `GOOGLE_SERVICE_ACCOUNT_EMAIL`
+ * `GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY`
 
 - **1.4.** Go back to the Google Sheets document and share it with the same `GOOGLE_SERVICE_ACCOUNT_EMAIL`, allowing sharing as an **editor** role.
 
@@ -43,8 +44,8 @@ https://docs.google.com/spreadsheets/d/GOOGLE_SPREADSHEET_ID
 
 - **2.2.** Add new variables values to the `.env` file:
 
- - `GOOGLE_OAUTH2_CLIENT_ID`
- - `GOOGLE_OAUTH2_CLIENT_SECRET`
+ * `GOOGLE_OAUTH2_CLIENT_ID`
+ * `GOOGLE_OAUTH2_CLIENT_SECRET`
 
 #### 3. Set remaining environment variables
 
