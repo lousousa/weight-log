@@ -227,7 +227,7 @@ const ActionButton = styled.button`
   position: relative;
   justify-content: center;
   align-items: center;
-  background-color: #FF3E45;
+  background-color: #7209b7;
   border: none;
   cursor: pointer;
   box-shadow: 0 2px 4px #666;
