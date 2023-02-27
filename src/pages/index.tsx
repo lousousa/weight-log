@@ -243,6 +243,9 @@ const ActionButton = styled.button`
 `
 
 const RingLoaderWrapper = styled.div`
+  background-color: #477cff;
+  width: 100%;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
