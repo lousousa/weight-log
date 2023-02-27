@@ -1,6 +1,6 @@
 # Weight Log
 
-[![react](./src/react.svg)](https://badges.aleen42.com/src/react.svg) [![typescript](./src/typescript.svg)](https://badges.aleen42.com/src/typescript.svg)
+[![react](https://badges.aleen42.com/src/react.svg)](https://badges.aleen42.com/src/react.svg) [![typescript](https://badges.aleen42.com/src/typescript.svg)](https://badges.aleen42.com/src/typescript.svg)
 
 ## Overview
 
