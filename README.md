@@ -47,7 +47,7 @@ This application is focused on simplifying the task of saving log entries for da
 - `JWT_SECRET`: a secret key required by Next Auth, that can be obtained by typing on terminal:
 
 ```bash
-openssl rand -base64 32`
+openssl rand -base64 32
 ```
 
 - `ALLOW_LIST`: a allow email list comma-separated for Google accounts that can log in to the application.
