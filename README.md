@@ -20,7 +20,7 @@ This application is focused on simplifying the task of saving log entries for da
 
 [PREVIEW DESKTOP]
 
-## Getting Started
+## Getting started
 
 ### 1. Configure Google Sheets
 
