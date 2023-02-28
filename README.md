@@ -4,7 +4,7 @@
 
 ## Overview
 
-This application is focused on simplifying the task of saving log entries for daily weights and showing them visually organized. The data is written and read from a Google Sheets document for a pre-defined single user.
+This application is focused on simplifying the task of saving log entries for daily body weight and showing them visually organized. The data is written and read from a Google Sheets document for a pre-defined single user.
 
 ## Featured stack:
 
