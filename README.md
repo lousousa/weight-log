@@ -16,9 +16,9 @@ This application is focused on simplifying the task of saving log entries for da
 
 ## Preview
 
-[PREVIEW MOBILE]
+![mobile](https://user-images.githubusercontent.com/2921281/221741703-0ecce18f-82cf-45a8-8272-68c63cbd0159.gif)
 
-[PREVIEW DESKTOP]
+![desktop](https://user-images.githubusercontent.com/2921281/221741736-b2f77089-9a85-4066-8d6c-7811a7181d0c.gif)
 
 ## Getting started
 
