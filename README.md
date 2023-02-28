@@ -28,7 +28,7 @@ This application is focused on simplifying the task of saving log entries for da
 
 ### 1. Configure Google Sheets
 
-- **1.1.** Create a [Google Sheets](https://sheets.google.com) document in this structure, each row containing a **date** column (YYYY-MM-DD) and then a **weight** column (a number with 1 decimal place):
+- **1.1.** Create a [Google Sheets](https://sheets.google.com) document with this structure, each row containing a **date** column (YYYY-MM-DD) and then a **weight** column (a number with 1 decimal place):
 
  ![image](https://user-images.githubusercontent.com/2921281/221711464-73155a9a-af19-4353-af90-41a4bbb628ac.png)
 
