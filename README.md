@@ -16,9 +16,13 @@ This application is focused on simplifying the task of saving log entries for da
 
 ## Preview
 
+### Mobile:
+
 ![mobile](https://user-images.githubusercontent.com/2921281/221741703-0ecce18f-82cf-45a8-8272-68c63cbd0159.gif)
 
-![desktop](https://user-images.githubusercontent.com/2921281/221741736-b2f77089-9a85-4066-8d6c-7811a7181d0c.gif)
+### Desktop:
+
+![desktop](https://user-images.githubusercontent.com/2921281/221742346-08782544-d99d-40ff-9296-49539a3255c6.gif)
 
 ## Getting started
 
@@ -77,4 +81,4 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ## That's it
 
-I hope you enjoy the application!
+I developed this app to have a simple interactive method to daily log my body weight, and because I knew it'd be fun to code it. Feel free to fork it and make your own custom needs or experience. I sincerely hope you enjoy it too!
