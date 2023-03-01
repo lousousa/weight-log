@@ -26,15 +26,8 @@ export default function Summary({data}: IProps) {
       const yesterdaysMonth = moment(data[i - 1].date).format('MM/YYYY')
       const todaysMonth = moment(data[i].date).format('MM/YYYY')
 
-      if (i === data.length - 1) {
-        ++currentCount
-        currentSum += parseFloat(data[i].weight)
-        averages.push({
-          month: data[i].date,
-          value: currentSum / currentCount
-        })
-        continue
-      }
+      ++currentCount
+      currentSum += parseFloat(data[i].weight)
 
       if (yesterdaysMonth !== todaysMonth) {
         averages.push({
@@ -42,13 +35,21 @@ export default function Summary({data}: IProps) {
           value: currentSum / currentCount
         })
 
-        currentCount = 1
-        currentSum = parseFloat(data[i].weight)
-        continue
+        currentCount = 0
+        currentSum = 0
       }
 
-      ++currentCount
-      currentSum += parseFloat(data[i].weight)
+      if (i === data.length - 1) {
+        if (!currentCount) {
+          currentSum = parseFloat(data[i].weight)
+          currentCount = 1
+        }
+
+        averages.push({
+          month: data[i].date,
+          value: currentSum / currentCount
+        })
+      }
     }
 
     let minValue = Number.MAX_VALUE
