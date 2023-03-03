@@ -7,6 +7,10 @@ interface IProps {
   data: ILogEntry[]
 }
 
+type Mem = {
+  [key: string]: { sum: number, count: number }
+}
+
 type AverageByMonth= {
   month: string,
   value: number,
@@ -19,38 +23,30 @@ export default function Summary({data}: IProps) {
   useEffect(() => {
     const averages: AverageByMonth[] = []
 
-    let currentSum = parseFloat(data[0].weight)
-    let currentCount = 1
+    const mem: Mem = {}
 
-    for (let i = 1; i < data.length; i++) {
-      const yesterdaysMonth = moment(data[i - 1].date).format('MM/YYYY')
-      const todaysMonth = moment(data[i].date).format('MM/YYYY')
+    data.forEach(item => {
+      const key = moment(item.date).format('YYYY-MM')
 
-      ++currentCount
-      currentSum += parseFloat(data[i].weight)
-
-      if (yesterdaysMonth !== todaysMonth) {
-        averages.push({
-          month: data[i - 1].date,
-          value: currentSum / currentCount
-        })
-
-        currentCount = 0
-        currentSum = 0
-      }
-
-      if (i === data.length - 1) {
-        if (!currentCount) {
-          currentSum = parseFloat(data[i].weight)
-          currentCount = 1
+      if (!mem[key]) {
+        mem[key] = {
+          sum: parseFloat(item.weight),
+          count: 1
         }
 
-        averages.push({
-          month: data[i].date,
-          value: currentSum / currentCount
-        })
+        return
       }
-    }
+
+      mem[key].sum += parseFloat(item.weight)
+      mem[key].count++
+    })
+
+    Object.keys(mem).forEach(key => {
+      averages.push({
+        month: key,
+        value: mem[key].sum / mem[key].count
+      })
+    })
 
     let minValue = Number.MAX_VALUE
     let maxValue = 0
@@ -138,11 +134,15 @@ const BarWrapper = styled.div`
   font-size: 14px;
   line-height: 32px;
   white-space: nowrap;
+
+  span {
+    font-weight: 700;
+  }
 `
 
 const Bar = styled.div<{percentage: number}>`
   ${props => `
-    height: calc(16px + ${props.percentage}px);
+    height: calc(58px + ${props.percentage / 2}px);
   `}
 
   background-color: #5a7bfc;
