@@ -24,6 +24,8 @@ export default function Chart({data}: IProps) {
   const [checkpointsInfo, setCheckpointsInfo] = useState<CheckpointInfo[]>([])
   const [newMonthsInfo, setNewMonthsInfo] = useState<NewMonthInfo[]>([])
   const [selectedDot, setSelectedDot] = useState<number>(data.length - 1)
+  const [min, setMin] = useState<ILogEntry | null>(null)
+  const [max, setMax] = useState<ILogEntry | null>(null)
 
   useEffect(() => {
     if (!chartWrapper.current) return
@@ -51,8 +53,15 @@ export default function Chart({data}: IProps) {
     data.forEach(value => {
       const parsed = parseFloat(value.weight)
 
-      if (parsed < minValue) minValue = parsed
-      if (parsed > maxValue) maxValue = parsed
+      if (parsed < minValue) {
+        minValue = parsed
+        setMin(value)
+      }
+
+      if (parsed > maxValue) {
+        maxValue = parsed
+        setMax(value)
+      }
     })
 
     const yStep = (canvas.current.height - 3 - 20) / (maxValue - minValue)
@@ -153,12 +162,32 @@ export default function Chart({data}: IProps) {
         </NewMonthText>
       ))}
     </ChartWrapper>
+
+    {min && (
+      <MinMaxText>
+        <span>
+          min: {min.weight} - {moment(min.date).format('DD/MM/YYYY')}
+        </span>
+      </MinMaxText>
+    )}
+
+    {max && (
+      <MinMaxText>
+        <span>
+          max: {max.weight} - {moment(max.date).format('DD/MM/YYYY')}
+        </span>
+      </MinMaxText>
+    )}
   </ChartSection>
 }
 
 const ChartSection = styled.div`
   padding: 16px 0;
   width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: end;
+  gap: 4px 0;
 `
 
 const ChartWrapper = styled.div`
@@ -237,4 +266,15 @@ const NewMonthText = styled.div<{x: number}>`
   color: #eff2ff;
   bottom: 52px;
   margin-left: 8px;
+`
+
+const MinMaxText = styled.div`
+  font-size: 12px;
+  font-weight: 700;
+
+  &:not(:nth-child(2)) {
+    padding-left: 8px;
+    margin-left: 8px;
+    border-left: 1px solid #666;
+  }
 `
