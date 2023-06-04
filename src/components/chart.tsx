@@ -19,8 +19,8 @@ type NewMonthInfo = {
 }
 
 export default function Chart({data}: IProps) {
-  const canvas = useRef<HTMLCanvasElement | null>(null)
-  const chartWrapper = useRef<HTMLDivElement | null>(null)
+  const canvas = useRef<HTMLCanvasElement>(null)
+  const chartWrapper = useRef<HTMLDivElement>(null)
   const [checkpointsInfo, setCheckpointsInfo] = useState<CheckpointInfo[]>([])
   const [newMonthsInfo, setNewMonthsInfo] = useState<NewMonthInfo[]>([])
   const [selectedDot, setSelectedDot] = useState<number>(data.length - 1)
