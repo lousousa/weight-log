@@ -1,5 +1,5 @@
 import { ILogEntry } from '@/types'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import moment from 'moment'
 import styled from 'styled-components'
 
@@ -19,6 +19,7 @@ type AverageByMonth= {
 
 export default function Summary({data}: IProps) {
   const [averages, setAverages] = useState<AverageByMonth[]>([])
+  const barsSection = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const averages: AverageByMonth[] = []
@@ -63,7 +64,14 @@ export default function Summary({data}: IProps) {
     })
 
     setAverages(averages)
-  }, [data])
+
+    if (!barsSection.current) return
+
+    const {offsetWidth, scrollWidth} = barsSection.current
+
+    if (offsetWidth && scrollWidth)
+      barsSection.current?.scrollTo(scrollWidth - offsetWidth, 0)
+  }, [barsSection, data])
 
   return (
     <div>
@@ -71,7 +79,9 @@ export default function Summary({data}: IProps) {
         monthly average
       </TitleText>
 
-      <BarsSection>
+      <BarsSection
+        ref={barsSection}
+      >
         {averages.map((averageByMonth) => (
           <BarWrapper
             key={averageByMonth.month}
@@ -113,6 +123,11 @@ const BarsSection = styled.div`
   margin-top: 16px;
   overflow-x: auto;
   border-radius: 8px;
+  aspect-ratio: 1.81;
+
+  @media all and (min-width: 640px) {
+    aspect-ratio: unset;
+  }
 
   &::-webkit-scrollbar {
     height: .6rem;
