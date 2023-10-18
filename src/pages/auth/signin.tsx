@@ -19,7 +19,7 @@ export default function SignIn({ providers }: InferGetServerSidePropsType<typeof
         <RingLoaderWrapper>
           <RingLoader
             color='#e4e7f5'
-            size='64px'
+            size='48px'
           />
         </RingLoaderWrapper>
       )}
