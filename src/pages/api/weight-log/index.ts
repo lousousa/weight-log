@@ -30,7 +30,10 @@ async function loadSheet() {
 
 async function getData() {
   const { sheet, lastRowNumber } = await loadSheet()
-  if (!sheet) return
+  if (!sheet) return {
+    error: true,
+    message: `Sheet for user "${USER_EMAIL}" was not found in the document.`
+  }
 
   const data = []
 
@@ -65,7 +68,13 @@ router.get(async (req: NextApiRequest, res: NextApiResponse<any>) => {
 
   if (session) {
     USER_EMAIL = session.user?.email
-    return res.status(200).json(await getData())
+    const data: any = await getData()
+
+    if (data.error) {
+      return res.status(404).send(data.message)
+    }
+
+    return res.status(200).json(data)
   }
 
   return res.status(401).send('401 unauthorized')
