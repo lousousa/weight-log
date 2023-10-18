@@ -7,6 +7,7 @@ const router = createRouter<NextApiRequest, NextApiResponse>()
 
 import { GoogleSpreadsheet } from 'google-spreadsheet'
 const doc = new GoogleSpreadsheet(process.env.GOOGLE_SPREADSHEET_ID)
+let USER_EMAIL: string | null | undefined
 
 async function userServiceAccountAuth() {
   await doc.useServiceAccountAuth({
@@ -16,9 +17,11 @@ async function userServiceAccountAuth() {
 }
 
 async function loadSheet() {
+  if (!USER_EMAIL) return {}
+
   await userServiceAccountAuth()
   await doc.loadInfo()
-  const sheet = doc.sheetsByTitle['MainSheet']
+  const sheet = doc.sheetsByTitle[USER_EMAIL]
   await sheet.resetLocalCache(true)
   await sheet.loadCells('A1:B')
 
@@ -27,6 +30,8 @@ async function loadSheet() {
 
 async function getData() {
   const { sheet, lastRowNumber } = await loadSheet()
+  if (!sheet) return
+
   const data = []
 
   for (let i = 0; i < lastRowNumber; i++) {
@@ -44,6 +49,7 @@ async function getData() {
 
 async function addEntry(entry: ILogEntry) {
   let { sheet, lastRowNumber } = await loadSheet()
+  if (!sheet || !lastRowNumber) return
 
   const previousDate = sheet.getCell(lastRowNumber - 1, 0).value
   if (previousDate === entry.date) lastRowNumber -= 1
@@ -57,8 +63,10 @@ async function addEntry(entry: ILogEntry) {
 router.get(async (req: NextApiRequest, res: NextApiResponse<any>) => {
   const session = await getSession({ req })
 
-  if (session)
+  if (session) {
+    USER_EMAIL = session.user?.email
     return res.status(200).json(await getData())
+  }
 
   return res.status(401).send('401 unauthorized')
 })
