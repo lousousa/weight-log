@@ -48,6 +48,8 @@ https://docs.google.com/spreadsheets/d/GOOGLE_SPREADSHEET_ID
 
 - **2.1.** Go again to [Google Console](https://console.cloud.google.com/apis/credentials), create a new **Oauth client ID** credential, and then enable the *localhost* and *remote host* access on its ID settings.
 
+![image](https://github.com/lousousa/weight-log/assets/2921281/9f644e80-217a-4d8c-a6a9-fe97ee293a5b)
+
 - **2.2.** Add new variables values to the `.env` file:
 
   * `GOOGLE_OAUTH2_CLIENT_ID`
