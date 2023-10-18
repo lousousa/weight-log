@@ -22,6 +22,8 @@ async function loadSheet() {
   await userServiceAccountAuth()
   await doc.loadInfo()
   const sheet = doc.sheetsByTitle[USER_EMAIL]
+  if (!sheet) return {}
+
   await sheet.resetLocalCache(true)
   await sheet.loadCells('A1:B')
 
