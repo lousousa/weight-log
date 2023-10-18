@@ -85,6 +85,16 @@ yarn dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+## 5. Build for production
+
+```bash
+yarn build
+```
+
+```bash
+yarn start
+```
+
 ## That's it
 
 I developed this app to have a simple interactive method to daily log my body weight, and because I knew it'd be fun to code it. Feel free to fork it and make your own custom needs or experience. I sincerely hope you enjoy it too!
