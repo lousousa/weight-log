@@ -86,7 +86,7 @@ export default function Home() {
           <RingLoaderWrapper>
             <RingLoader
               color='#e4e7f5'
-              size='64px'
+              size='48px'
             />
           </RingLoaderWrapper>
         )}
@@ -160,7 +160,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 }
 
 const Main = styled.main`
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
