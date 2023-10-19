@@ -1,4 +1,5 @@
 import { useRef, useState, useEffect, useCallback } from 'react'
+import ReactHtmlParser from 'react-html-parser'
 import Head from 'next/head'
 import styled from 'styled-components'
 import moment from 'moment'
@@ -26,6 +27,7 @@ export default function Home() {
   const modalRef = useRef<IModal>()
   const toastServiceRef = useRef()
   const modalTitle = moment().format('ll').toLowerCase()
+  const [textTitle, setTextTitle] = useState('')
   const [isLoading, setLoading] = useState(true)
   const [content, setContent] = useState([])
   const [user, setUser] = useState<DefaultSession['user'] | null | undefined>(null)
@@ -41,6 +43,11 @@ export default function Home() {
       const data = await response.json()
 
       data.sort((a: ILogEntry, b: ILogEntry) => a.date > b.date ? -1 : 1)
+
+      setTextTitle('<b>overview</b>')
+
+      const name = user?.name?.toLowerCase()
+      if (data.length === 0) setTextTitle(`welcome, <br><b>${name}</b>!`)
 
       setContent(data)
       setLoading(false)
@@ -95,7 +102,7 @@ export default function Home() {
           <ContentSection>
             <ContentHeader>
               <TitleText>
-                overview
+                {ReactHtmlParser(textTitle)}
               </TitleText>
 
               <SignOutWrapper>
@@ -118,9 +125,19 @@ export default function Home() {
               </SignOutWrapper>
             </ContentHeader>
 
-            <Chart data={content} />
+            {content.length > 0 && (
+              <>
+                <Chart data={content} />
 
-            <MonthlyAverage data={content} />
+                <MonthlyAverage data={content} />
+              </>
+            )}
+
+            {content.length === 0 && (
+              <WelcomeTextWrapper>
+                <p>it looks like it's your first time here, why don't you try logging your current weight?</p>
+              </WelcomeTextWrapper>
+            )}
 
             <ActionButton
               onClick={onAddActionHandler}
@@ -189,12 +206,19 @@ const ContentSection = styled.div`
 const TitleText = styled.h1`
   font-size: 24px;
   line-height: 32px;
+  font-weight: 400;
+
+  @media screen and (min-width: 600px) {
+    br {
+      display: none;
+    }
+  }
 `
 
 const ContentHeader = styled.header`
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: center;
 `
 
 const UserImageWrapper = styled.div`
@@ -219,6 +243,17 @@ const SignOutButton = styled.button`
   color: #2146d1;
   margin-top: 4px;
   display: none;
+`
+
+const WelcomeTextWrapper = styled.div`
+  margin: 96px auto;
+  text-align: center;
+  max-width: 288px;
+
+  p {
+    font-size: 18px;
+    line-height: 30px;
+  }
 `
 
 const ActionButton = styled.button`
