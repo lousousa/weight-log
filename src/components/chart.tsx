@@ -42,6 +42,7 @@ export default function Chart({data}: IProps) {
     const xStep = 20
 
     canvas.current.width = (data.length - 1) * xStep
+
     canvas.current.height = 148
 
     const ctx = canvas.current.getContext('2d')
@@ -70,6 +71,10 @@ export default function Chart({data}: IProps) {
     const newWeeks = []
 
     data.sort((a, b) => a.date < b.date ? -1 : 1)
+
+    if (data.length === 1) {
+      checkpointsInfo.push({x: 0, y: 0, data: data[0]})
+    }
 
     for (let i = 0; i < data.length - 1; i++) {
       const current = parseFloat(data[i].weight)
