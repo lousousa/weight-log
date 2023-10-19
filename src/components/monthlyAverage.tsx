@@ -59,9 +59,13 @@ export default function Summary({data}: IProps) {
 
     const difference = maxValue - minValue
 
-    averages.forEach((average) => {
-      average.percentage = ((average.value - minValue) * 100) / difference
-    })
+    if (averages.length === 1) {
+      averages[0].percentage = 100
+    } else {
+      averages.forEach((average) => {
+        average.percentage = ((average.value - minValue) * 100) / difference
+      })
+    }
 
     setAverages(averages)
 
@@ -162,6 +166,7 @@ const Bar = styled.div<{percentage: number}>`
 
   background-color: #5a7bfc;
   width: 100%;
+  max-width: 196px;
   border-radius: 4px;
   min-width: 60px;
   margin: 0 auto;
