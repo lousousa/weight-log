@@ -57,7 +57,7 @@ export default function Home() {
     } catch (error) {
       console.error(error)
     }
-  }, [])
+  }, [user])
 
   useEffect(() => {
     window.$toastService = toastServiceRef.current
@@ -138,7 +138,7 @@ export default function Home() {
 
             {content.length === 0 && (
               <WelcomeTextWrapper>
-                <p>it looks like it's your first time here, why don't you try logging your current weight?</p>
+                <p>it looks like it&apos;s your first time here, why don&apos;t you try logging your current weight?</p>
               </WelcomeTextWrapper>
             )}
 
