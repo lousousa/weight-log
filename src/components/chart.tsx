@@ -168,7 +168,7 @@ export default function Chart({data}: IProps) {
       ))}
     </ChartWrapper>
 
-    {min && (
+    {min && min !== max && (
       <MinMaxText>
         <span>
           min: {min.weight} - {moment(min.date).format('DD/MM/YYYY')}
@@ -176,7 +176,7 @@ export default function Chart({data}: IProps) {
       </MinMaxText>
     )}
 
-    {max && (
+    {max && min !== max && (
       <MinMaxText>
         <span>
           max: {max.weight} - {moment(max.date).format('DD/MM/YYYY')}
