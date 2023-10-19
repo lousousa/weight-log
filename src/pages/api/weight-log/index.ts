@@ -27,7 +27,9 @@ async function loadSheet() {
   await sheet.resetLocalCache(true)
   await sheet.loadCells('A1:B')
 
-  return { sheet, lastRowNumber: sheet.cellStats.nonEmpty / 2 }
+  const lastRowNumber = sheet.cellStats.nonEmpty / 2
+
+  return { sheet, lastRowNumber }
 }
 
 async function getData() {
@@ -54,10 +56,13 @@ async function getData() {
 
 async function addEntry(entry: ILogEntry) {
   let { sheet, lastRowNumber } = await loadSheet()
-  if (!sheet || !lastRowNumber) return
 
-  const previousDate = sheet.getCell(lastRowNumber - 1, 0).value
-  if (previousDate === entry.date) lastRowNumber -= 1
+  if (!sheet || lastRowNumber === undefined) return
+
+  if (lastRowNumber > 0) {
+    const previousDate = sheet.getCell(lastRowNumber - 1, 0).value
+    if (previousDate === entry.date) lastRowNumber -= 1
+  }
 
   sheet.getCell(lastRowNumber, 0).value = entry.date
   sheet.getCell(lastRowNumber, 1).value = entry.weight
@@ -86,6 +91,8 @@ router.post(async (req: NextApiRequest, res: NextApiResponse<any>) => {
   const session = await getSession({ req })
 
   if (session) {
+    USER_EMAIL = session.user?.email
+
     await addEntry(req.body)
     return res.status(200).json({ success: true })
   }

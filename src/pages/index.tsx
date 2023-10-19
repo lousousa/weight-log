@@ -46,8 +46,11 @@ export default function Home() {
 
       setTextTitle('<b>overview</b>')
 
-      const name = user?.name?.toLowerCase()
-      if (data.length === 0) setTextTitle(`welcome, <br><b>${name}</b>!`)
+      if (data.length === 0) {
+        const name = user?.name?.toLowerCase()
+
+        setTextTitle(name ? `welcome, <br><b>${name}</b>!` : `<b>welcome!</b>`)
+      }
 
       setContent(data)
       setLoading(false)
