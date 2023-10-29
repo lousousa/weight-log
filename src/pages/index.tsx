@@ -180,14 +180,14 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 }
 
 const Main = styled.main`
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   color: #222222;
 
   @media screen and (min-width: 600px) {
-    padding: 40px 0;
+    padding: 20px;
     background-color: #477cff;
   }
 `
