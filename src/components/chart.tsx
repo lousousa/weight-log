@@ -231,6 +231,7 @@ const ChartWrapper = styled.div`
 
   &::-webkit-scrollbar-thumb {
     background-color: #ddd;
+    cursor: pointer;
     outline: none;
   }
 `
