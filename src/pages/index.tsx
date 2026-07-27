@@ -26,10 +26,11 @@ interface IModal {
 export default function Home() {
   const modalRef = useRef<IModal>()
   const toastServiceRef = useRef()
+  const hasFetchedContentRef = useRef(false)
   const modalTitle = moment().format('ll').toLowerCase()
   const [textTitle, setTextTitle] = useState('')
   const [isLoading, setLoading] = useState(true)
-  const [content, setContent] = useState([])
+  const [content, setContent] = useState<ILogEntry[]>([])
   const [user, setUser] = useState<DefaultSession['user'] | null | undefined>(null)
   const { data: session } = useSession()
 
@@ -44,24 +45,21 @@ export default function Home() {
 
       data.sort((a: ILogEntry, b: ILogEntry) => a.date > b.date ? -1 : 1)
 
-      setTextTitle('<b>overview</b>')
-
-      if (data.length === 0) {
-        const name = user?.name?.toLowerCase()
-
-        setTextTitle(name ? `welcome, <br><b>${name}</b>!` : `<b>welcome!</b>`)
-      }
-
+      setTextTitle(data.length === 0 ? '<b>welcome!</b>' : '<b>overview</b>')
       setContent(data)
-      setLoading(false)
     } catch (error) {
       console.error(error)
+    } finally {
+      setLoading(false)
     }
-  }, [user])
+  }, [])
 
   useEffect(() => {
     window.$toastService = toastServiceRef.current
 
+    if (hasFetchedContentRef.current) return
+
+    hasFetchedContentRef.current = true
     fetchContent()
   }, [fetchContent])
 
@@ -70,6 +68,16 @@ export default function Home() {
       setUser(session.user)
     }
   }, [session])
+
+  useEffect(() => {
+    if (content.length > 0) {
+      setTextTitle('<b>overview</b>')
+      return
+    }
+
+    const name = user?.name?.toLowerCase()
+    setTextTitle(name ? `welcome, <br><b>${name}</b>!` : '<b>welcome!</b>')
+  }, [content.length, user])
 
   const onFormSubmit = () => {
     modalRef.current?.close()

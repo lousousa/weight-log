@@ -7,24 +7,40 @@ const router = createRouter<NextApiRequest, NextApiResponse>()
 
 import { GoogleSpreadsheet } from 'google-spreadsheet'
 const doc = new GoogleSpreadsheet(process.env.GOOGLE_SPREADSHEET_ID)
-let USER_EMAIL: string | null | undefined
+let isAuthenticated = false
+let isDocumentLoaded = false
 
 async function userServiceAccountAuth() {
+  if (isAuthenticated) return
+
   await doc.useServiceAccountAuth({
     client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL || '',
     private_key: process.env.GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY?.replace(/\\n/g, "\n") || ''
   })
+
+  isAuthenticated = true
 }
 
-async function loadSheet() {
-  if (!USER_EMAIL) return {}
+async function loadDocumentInfo() {
+  if (isDocumentLoaded) return
+
+  await doc.loadInfo()
+  isDocumentLoaded = true
+}
+
+async function loadSheet(userEmail: string | null | undefined, resetCache = false) {
+  if (!userEmail) return {}
 
   await userServiceAccountAuth()
-  await doc.loadInfo()
-  const sheet = doc.sheetsByTitle[USER_EMAIL]
+  await loadDocumentInfo()
+
+  const sheet = doc.sheetsByTitle[userEmail]
   if (!sheet) return {}
 
-  await sheet.resetLocalCache(true)
+  if (resetCache) {
+    await sheet.resetLocalCache(true)
+  }
+
   await sheet.loadCells('A1:B')
 
   const lastRowNumber = sheet.cellStats.nonEmpty / 2
@@ -32,11 +48,11 @@ async function loadSheet() {
   return { sheet, lastRowNumber }
 }
 
-async function getData() {
-  const { sheet, lastRowNumber } = await loadSheet()
+async function getData(userEmail: string | null | undefined) {
+  const { sheet, lastRowNumber } = await loadSheet(userEmail)
   if (!sheet) return {
     error: true,
-    message: `Sheet for user "${USER_EMAIL}" was not found in the document.`
+    message: `Sheet for user "${userEmail}" was not found in the document.`
   }
 
   const data = []
@@ -54,8 +70,8 @@ async function getData() {
   return data
 }
 
-async function addEntry(entry: ILogEntry) {
-  let { sheet, lastRowNumber } = await loadSheet()
+async function addEntry(userEmail: string | null | undefined, entry: ILogEntry) {
+  let { sheet, lastRowNumber } = await loadSheet(userEmail, true)
 
   if (!sheet || lastRowNumber === undefined) return
 
@@ -74,8 +90,7 @@ router.get(async (req: NextApiRequest, res: NextApiResponse<any>) => {
   const session = await getSession({ req })
 
   if (session) {
-    USER_EMAIL = session.user?.email
-    const data: any = await getData()
+    const data: any = await getData(session.user?.email)
 
     if (data.error) {
       return res.status(404).send(data.message)
@@ -91,9 +106,7 @@ router.post(async (req: NextApiRequest, res: NextApiResponse<any>) => {
   const session = await getSession({ req })
 
   if (session) {
-    USER_EMAIL = session.user?.email
-
-    await addEntry(req.body)
+    await addEntry(session.user?.email, req.body)
     return res.status(200).json({ success: true })
   }
 
