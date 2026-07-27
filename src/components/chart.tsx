@@ -147,9 +147,7 @@ export default function Chart({data}: IProps) {
 
     setSelectedDots(current => {
       if (current.includes(selectedDot))
-        return current.length === 2
-          ? current.filter(currentDot => currentDot !== selectedDot)
-          : current
+        return current.length === 2 ? [selectedDot] : current
 
       if (current.length >= 2) return [...current.slice(1), selectedDot]
 
