@@ -245,7 +245,7 @@ const Dot = styled.div<{content: CheckpointInfo}>`
     &::before {
       ${props => `
         content: '${props.content.data.weight} -
-          ${moment(props.content.data.date).format('ll').toLowerCase()}';
+          ${moment(props.content.data.date).format('ddd, ll').toLowerCase()}';
       `}
 
       position: absolute;

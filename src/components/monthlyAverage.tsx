@@ -42,7 +42,7 @@ export default function Summary({data}: IProps) {
       mem[key].count++
     })
 
-    Object.keys(mem).forEach(key => {
+    Object.keys(mem).sort().forEach(key => {
       averages.push({
         month: key,
         value: mem[key].sum / mem[key].count
@@ -68,14 +68,16 @@ export default function Summary({data}: IProps) {
     }
 
     setAverages(averages)
+  }, [data])
 
+  useEffect(() => {
     if (!barsSection.current) return
 
     const {offsetWidth, scrollWidth} = barsSection.current
 
     if (offsetWidth && scrollWidth)
-      barsSection.current?.scrollTo(scrollWidth - offsetWidth, 0)
-  }, [barsSection, data])
+      barsSection.current.scrollTo(scrollWidth - offsetWidth, 0)
+  }, [averages])
 
   return (
     <div>
