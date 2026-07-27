@@ -28,7 +28,7 @@ async function loadDocumentInfo() {
   isDocumentLoaded = true
 }
 
-async function loadSheet(userEmail: string | null | undefined, resetCache = false) {
+async function loadSheet(userEmail: string | null | undefined) {
   if (!userEmail) return {}
 
   await userServiceAccountAuth()
@@ -37,53 +37,41 @@ async function loadSheet(userEmail: string | null | undefined, resetCache = fals
   const sheet = doc.sheetsByTitle[userEmail]
   if (!sheet) return {}
 
-  if (resetCache) {
-    await sheet.resetLocalCache(true)
-  }
-
-  await sheet.loadCells('A1:B')
-
-  const lastRowNumber = sheet.cellStats.nonEmpty / 2
-
-  return { sheet, lastRowNumber }
+  return { sheet }
 }
 
 async function getData(userEmail: string | null | undefined) {
-  const { sheet, lastRowNumber } = await loadSheet(userEmail)
+  const { sheet } = await loadSheet(userEmail)
   if (!sheet) return {
     error: true,
     message: `Sheet for user "${userEmail}" was not found in the document.`
   }
 
-  const data = []
+  const rows = await sheet.getRows()
 
-  for (let i = 0; i < lastRowNumber; i++) {
-    const date = sheet.getCell(i, 0)
-    const weight = sheet.getCell(i, 1)
-
-    data.push({
-      date: date.formattedValue,
-      weight: weight.formattedValue
-    })
-  }
-
-  return data
+  return rows.map(row => ({
+    date: row.date,
+    weight: row.weight
+  }))
 }
 
 async function addEntry(userEmail: string | null | undefined, entry: ILogEntry) {
-  let { sheet, lastRowNumber } = await loadSheet(userEmail, true)
+  const { sheet } = await loadSheet(userEmail)
 
-  if (!sheet || lastRowNumber === undefined) return
+  if (!sheet) return
 
-  if (lastRowNumber > 0) {
-    const previousDate = sheet.getCell(lastRowNumber - 1, 0).value
-    if (previousDate === entry.date) lastRowNumber -= 1
+  const rows = await sheet.getRows()
+  const existingRow = rows.find(row => row.date === entry.date)
+
+  if (existingRow) {
+    existingRow.weight = entry.weight
+    return existingRow.save()
   }
 
-  sheet.getCell(lastRowNumber, 0).value = entry.date
-  sheet.getCell(lastRowNumber, 1).value = entry.weight
-
-  return sheet.saveUpdatedCells()
+  return sheet.addRow({
+    date: entry.date,
+    weight: entry.weight
+  })
 }
 
 router.get(async (req: NextApiRequest, res: NextApiResponse<any>) => {
