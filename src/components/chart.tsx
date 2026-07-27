@@ -23,9 +23,13 @@ export default function Chart({data}: IProps) {
   const chartWrapper = useRef<HTMLDivElement>(null)
   const [checkpointsInfo, setCheckpointsInfo] = useState<CheckpointInfo[]>([])
   const [newMonthsInfo, setNewMonthsInfo] = useState<NewMonthInfo[]>([])
-  const [selectedDot, setSelectedDot] = useState<number>(data.length - 1)
+  const [selectedDots, setSelectedDots] = useState<number[]>([data.length - 1])
   const [min, setMin] = useState<ILogEntry | null>(null)
   const [max, setMax] = useState<ILogEntry | null>(null)
+
+  useEffect(() => {
+    setSelectedDots([data.length - 1])
+  }, [data.length])
 
   useEffect(() => {
     if (!chartWrapper.current) return
@@ -137,9 +141,20 @@ export default function Chart({data}: IProps) {
 
   const onSelectDot = (e: React.SyntheticEvent) => {
     if (!(e.target instanceof HTMLDivElement)) return
+    if (!e.target.dataset.value) return
 
-    if (e.target.dataset.value)
-      setSelectedDot(parseInt(e.target.dataset.value))
+    const selectedDot = parseInt(e.target.dataset.value)
+
+    setSelectedDots(current => {
+      if (current.includes(selectedDot))
+        return current.length === 2
+          ? current.filter(currentDot => currentDot !== selectedDot)
+          : current
+
+      if (current.length >= 2) return [...current.slice(1), selectedDot]
+
+      return [...current, selectedDot]
+    })
   }
 
   return <ChartSection>
@@ -152,7 +167,7 @@ export default function Chart({data}: IProps) {
 
       {checkpointsInfo.map((checkpointInfo, idx) => (
         <Dot
-          className={`${idx === selectedDot ? '-is-selected' : ''}`}
+          className={`${selectedDots.includes(idx) ? '-is-selected' : ''}`}
           key={idx}
           content={checkpointInfo}
           onClick={onSelectDot}
