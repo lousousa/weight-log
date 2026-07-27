@@ -105,7 +105,9 @@ export default function Chart({data}: IProps) {
       if (i < data.length - 2 && todaysMonth !== tomorrowsMonth)
         newMonthsInfo.push({
           x: x2,
-          month: tomorrow.format('MMM')
+          month: tomorrow.isSame(moment(), 'year')
+            ? tomorrow.format('MMM')
+            : tomorrow.format('MMM/YY')
         })
 
       if (!today.isSame(tomorrow, 'week')) newWeeks.push(x2)
