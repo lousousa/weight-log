@@ -251,13 +251,16 @@ const Dot = styled.div<{content: CheckpointInfo}>`
   cursor: pointer;
   box-sizing: content-box;
 
-  &:hover,
-  &.-is-selected {
-    border: 4px solid #000;
-    margin: -4px 0 0 -4px;
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      border: 4px solid #000;
+      margin: -4px 0 0 -4px;
+    }
   }
 
   &.-is-selected {
+    border: 4px solid #000;
+    margin: -4px 0 0 -4px;
     &::before {
       ${props => `
         content: '${props.content.data.weight} -
