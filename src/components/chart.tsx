@@ -40,8 +40,9 @@ export default function Chart({data}: IProps) {
     if (!canvas.current) return
 
     const xStep = 20
+    const rightTooltipOffset = 2
 
-    canvas.current.width = (data.length - 1) * xStep
+    canvas.current.width = ((data.length - 1) * xStep) + rightTooltipOffset
 
     canvas.current.height = 148
 
@@ -251,9 +252,9 @@ const Dot = styled.div<{content: CheckpointInfo}>`
       position: absolute;
       white-space: nowrap;
       top: -40px;
-      left: -55px;
-      width: 110px;
-      padding: 8px;
+      left: -78px;
+      width: 150px;
+      padding: 8px 0;
       z-index: 2;
       background: linear-gradient(to top, #000, #222);
       text-align: center;
