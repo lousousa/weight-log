@@ -92,17 +92,18 @@ export default function Chart({data}: IProps) {
 
       checkpointsInfo.push({x: x2, y: y2, data: data[i + 1]})
 
-      const todaysMonth = moment(data[i].date).format('M')
-      const tomorrowsMonth = moment(data[i + 1].date).format('M')
+      const today = moment(data[i].date)
+      const tomorrow = moment(data[i + 1].date)
+      const todaysMonth = today.format('M')
+      const tomorrowsMonth = tomorrow.format('M')
 
       if (i < data.length - 2 && todaysMonth !== tomorrowsMonth)
         newMonthsInfo.push({
           x: x2,
-          month: moment(data[i + 1].date).format('MMM')
+          month: tomorrow.format('MMM')
         })
 
-      const todaysWeekday = moment(data[i].date).format('d')
-      if (todaysWeekday === '0') newWeeks.push(x1)
+      if (!today.isSame(tomorrow, 'week')) newWeeks.push(x2)
     }
 
     setCheckpointsInfo(checkpointsInfo)
