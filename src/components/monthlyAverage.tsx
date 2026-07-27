@@ -144,7 +144,8 @@ const BarsSection = styled.div`
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: #ddd;
+    background-color: #5A7BFC;
+    cursor: pointer;
     outline: none;
   }
 `
