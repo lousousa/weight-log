@@ -4,7 +4,8 @@ import moment from 'moment'
 import styled from 'styled-components'
 
 interface IProps {
-  data: ILogEntry[]
+  data: ILogEntry[],
+  onSelectMonth: (month: string) => void
 }
 
 type Mem = {
@@ -17,7 +18,7 @@ type AverageByMonth= {
   percentage?: number
 }
 
-export default function Summary({data}: IProps) {
+export default function Summary({data, onSelectMonth}: IProps) {
   const [averages, setAverages] = useState<AverageByMonth[]>([])
   const barsSection = useRef<HTMLDivElement>(null)
 
@@ -98,7 +99,10 @@ export default function Summary({data}: IProps) {
 
             {typeof averageByMonth.percentage === 'number' && (
               <Bar
-                percentage={averageByMonth.percentage}
+                type="button"
+                $percentage={averageByMonth.percentage}
+                aria-label={`select ${moment(averageByMonth.month).format('MMMM YYYY').toLowerCase()} monthly average`}
+                onClick={() => onSelectMonth(averageByMonth.month)}
               />
             )}
 
@@ -162,16 +166,32 @@ const BarWrapper = styled.div`
   }
 `
 
-const Bar = styled.div<{percentage: number}>`
+const Bar = styled.button<{$percentage: number}>`
   ${props => `
-    height: calc(58px + ${props.percentage / 2}px);
+    height: calc(58px + ${props.$percentage / 2}px);
   `}
 
+  appearance: none;
+  display: block;
   background-color: #5a7bfc;
   width: 100%;
   max-width: 196px;
+  border: 0;
   border-radius: 4px;
   min-width: 60px;
   margin: 0 auto;
+  padding: 0;
   position: relative;
+  cursor: pointer;
+  transition: background-color 160ms ease;
+
+  &:hover,
+  &:focus-visible {
+    background-color: #3f67f5;
+  }
+
+  &:focus-visible {
+    outline: 2px solid #2146d1;
+    outline-offset: 2px;
+  }
 `

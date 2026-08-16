@@ -4,7 +4,8 @@ import styled from 'styled-components'
 import moment from 'moment'
 
 interface IProps {
-  data: ILogEntry[]
+  data: ILogEntry[],
+  selectedMonth?: string
 }
 
 type CheckpointInfo = {
@@ -18,7 +19,7 @@ type NewMonthInfo = {
   month: string
 }
 
-export default function Chart({data}: IProps) {
+export default function Chart({data, selectedMonth}: IProps) {
   const canvas = useRef<HTMLCanvasElement>(null)
   const chartWrapper = useRef<HTMLDivElement>(null)
   const [checkpointsInfo, setCheckpointsInfo] = useState<CheckpointInfo[]>([])
@@ -39,6 +40,21 @@ export default function Chart({data}: IProps) {
     if (offsetWidth && scrollWidth)
       chartWrapper.current?.scrollTo(scrollWidth - offsetWidth, 0)
   }, [chartWrapper, checkpointsInfo])
+
+  useEffect(() => {
+    if (!chartWrapper.current || !selectedMonth) return
+
+    const firstEntryInMonth = checkpointsInfo.find(checkpointInfo =>
+      moment(checkpointInfo.data.date).format('YYYY-MM') === selectedMonth
+    )
+
+    if (!firstEntryInMonth) return
+
+    chartWrapper.current.scrollTo({
+      left: firstEntryInMonth.x,
+      behavior: 'smooth'
+    })
+  }, [checkpointsInfo, selectedMonth])
 
   useEffect(() => {
     if (!canvas.current) return

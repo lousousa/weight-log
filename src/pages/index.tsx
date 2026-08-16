@@ -31,6 +31,7 @@ export default function Home() {
   const [textTitle, setTextTitle] = useState('')
   const [isLoading, setLoading] = useState(true)
   const [content, setContent] = useState<ILogEntry[]>([])
+  const [selectedMonth, setSelectedMonth] = useState<string>()
   const [user, setUser] = useState<DefaultSession['user'] | null | undefined>(null)
   const { data: session } = useSession()
 
@@ -138,9 +139,15 @@ export default function Home() {
 
             {content.length > 0 && (
               <>
-                <Chart data={content} />
+                <Chart
+                  data={content}
+                  selectedMonth={selectedMonth}
+                />
 
-                <MonthlyAverage data={content} />
+                <MonthlyAverage
+                  data={content}
+                  onSelectMonth={setSelectedMonth}
+                />
               </>
             )}
 
